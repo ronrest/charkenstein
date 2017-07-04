@@ -1,5 +1,7 @@
 import random
 import string
+import time
+
 
 # MAP THE VOCABULARY AND INDICES
 id2char = list(string.printable)
@@ -29,5 +31,25 @@ def random_substring_ids(s, char2id, size=200):
     return [char2id[char] for char in random_substring(s, size=size)]
 
 
+# ==============================================================================
+#                                                                          TIMER
+# ==============================================================================
+class Timer(object):
+    def __init__(self):
+        self.start_time = 0
+    
+    def start(self):
+        self.start_time = time.time()
+    
+    def elapsed(self):
+        now = time.time()
+        return (now - self.start_time)
+    
+    def elapsed_string(self):
+        t = self.elapsed()
+        hours = int(t // 3600)
+        mins = int((t % 3600) // 60)
+        secs = int((t % 60) // 1)
+        return "{:02d}:{:02d}:{:02d}".format(hours, mins, secs)
 
 
