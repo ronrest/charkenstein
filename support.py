@@ -1,5 +1,8 @@
 import random
 import string
+import torch
+import torch.nn as nn
+from torch.autograd import Variable
 import time
 
 
