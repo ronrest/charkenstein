@@ -152,9 +152,10 @@ model = Model(in_size=n_chars,
               n_layers=N_LAYERS,
               dropout=DROPOUT)
 
+model.update_learning_rate(ALPHA)
+
 
 # SPECIFY LOSS AND OPTIMIZER FUNCTIONS
 loss_func = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=ALPHA)
-
 

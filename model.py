@@ -12,6 +12,7 @@ class Model(nn.Module):
         self.h_size = h_size
         self.out_size = out_size
         self.n_layers = n_layers
+        self.alpha = 0.001       # learning rate
         
         self.embeddings = nn.Embedding(in_size, embed_size)
         self.lstm = nn.LSTM(input_size=embed_size,
@@ -21,7 +22,11 @@ class Model(nn.Module):
                             dropout=dropout
                             )
         self.classifier = nn.Linear(h_size, out_size)
-    
+
+        # SPECIFY LOSS AND OPTIMIZER FUNCTIONS
+        self.loss_func = nn.CrossEntropyLoss()
+        self.optimizer = torch.optim.Adam(self.parameters(), lr=self.alpha)
+
     def forward(self, input, hidden):
         timesteps = 1 # keep timesteps fixed to 1 for generative tasks
         
@@ -40,4 +45,10 @@ class Model(nn.Module):
         return (Variable(torch.zeros(self.n_layers, batch_size, self.h_size)),
                 Variable(torch.zeros(self.n_layers, batch_size, self.h_size)))
 
+    def update_learning_rate(self, alpha):
+        """ Updates the learning rate without resetting momentum."""
+        for param_group in self.optimizer.param_groups:
+            param_group['lr'] = alpha
+        self.alpha = alpha
+        
 
