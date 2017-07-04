@@ -8,6 +8,8 @@ import unidecode
 
 import glob
 
+from support import random_substring_ids, str2tensor
+from support import id2char, char2id, n_chars
 
 ROOT_DIR = ""
 DATA_DIR = os.path.join(ROOT_DIR, "data")
@@ -47,6 +49,28 @@ for data_file in data_files:
 print("Chars in train data: {:>15d}".format(len(train)))
 print("Chars in test data:  {:>15d}".format(len(test)))
 print("Chars in valid data: {:>15d}".format(len(valid)))
+
+
+def random_training_batch(data, char2id, length=200, batch_size=1):
+    # Randomly sample a substring for each item in batch size
+    batch = []
+    for i in range(batch_size):
+        batch.append(random_substring_ids(data, char2id, size=length))
+    
+    # Convert it to a torch Variable
+    batch = Variable(torch.LongTensor(batch))
+
+    # The input and outputs are the same, just shifted by one value
+    X = batch[:, :-1]
+
+    # Not entirely sure if it is necessary to have the underlying data
+    # being a different object, but doing it to be safe.
+    Y = batch[:, 1:].clone()
+
+    return X, Y
+    
+
+# X, Y = random_training_batch(train, char2id, length=20, batch_size=5)
 
 
 
