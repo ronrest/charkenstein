@@ -88,7 +88,28 @@ def random_training_batch(data, char2id, length=200, batch_size=1):
 
 # X, Y = random_training_batch(train, char2id, length=20, batch_size=5)
 
+# ==============================================================================
+#                                                                          TRAIN
+# ==============================================================================
 def train(model, X, Y, loss_func, optimizer):
+    """ Given a model, the input and target labels representing a batch of
+        sequences of characters, it performs a full training step for those
+        sequences of characters, updating the model parameters based on the
+        specified loss and optimizer function.
+    
+    Args:
+        model:      (Model object)
+                    The model containing the neural net architecture.
+        X:          (torch Variable)
+                    The input tensor of shape: [batch, sequence_length]
+        Y:          (torch Variable)
+                    The output labels tensor of shape: [batch, sequence_length]
+        loss_func:  The torch loss function.
+        optimizer:  The torch optimizer function.
+
+    Returns:
+        Returns the average loss over the batch of sequences.
+    """
     # Get dimensions of input and target labels
     msg = "X and Y should be shape [n_batch, sequence_length]"
     assert len(X.size()) == len(Y.size()) == 2, msg
