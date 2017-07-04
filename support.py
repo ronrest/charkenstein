@@ -32,7 +32,13 @@ def random_substring_ids(s, char2id, size=200):
 
 
 # ==============================================================================
+# ==============================================================================
+#                                                                    PRETTY_TIME
+# ==============================================================================
 def pretty_time(t):
+    """ Given an elapsed time in seconds, it returns the time as a string
+        formatted as: "HH:MM:SS"
+    """
     hours = int(t // 3600)
     mins = int((t % 3600) // 60)
     secs = int((t % 60) // 1)
