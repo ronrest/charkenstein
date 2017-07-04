@@ -66,10 +66,6 @@ class Timer(object):
         """ Return the amount of elapsed time since the timer was started as a
             formatted string in format:  "HH:MM:SS"
         """
-        t = self.elapsed()
-        hours = int(t // 3600)
-        mins = int((t % 3600) // 60)
-        secs = int((t % 60) // 1)
-        return "{:02d}:{:02d}:{:02d}".format(hours, mins, secs)
+        return pretty_time(self.elapsed())
 
 
