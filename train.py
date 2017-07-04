@@ -140,7 +140,11 @@ def train(model, X, Y):
     return loss.data[0] / sample_length
 
 
+# ==============================================================================
+#                                                                  TRAIN_N_STEPS
+# ==============================================================================
 def train_n_steps(model, train_data, n_steps=1000, batch_size=32, feedback_every=1000):
+    """ Trains the model for n_steps number of steps """
     total_timer = Timer()
     feedback_timer = Timer()
     total_timer.start()
