@@ -1,4 +1,12 @@
 import random
+import string
+
+# MAP THE VOCABULARY AND INDICES
+id2char = list(string.printable)
+char2id = {char: id for id, char in enumerate(id2char)}
+n_chars = len(id2char)
+
+
 # ==============================================================================
 #                                                               RANDOM_SUBSTRING
 # ==============================================================================
