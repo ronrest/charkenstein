@@ -97,6 +97,15 @@ def random_training_batch(data, char2id, length=200, batch_size=1):
 
 # X, Y = random_training_batch(train, char2id, length=20, batch_size=5)
 
+def print_train_feedback(step, total_steps, loss, elapsed_time, avg_time):
+    progress = 100 * float(step) / total_steps
+    avg_time_ms = avg_time * 1000
+    
+    #    3000 (  18.8%) 00:00:02 | AVG_MS:  25.47 | LOSS:  2.421
+    template = "{: 8d} ({: 6.1f}%) {} | AVG_MS:{: 7.2f} | LOSS:{: 7.3f}"
+    print(template.format(step, progress, pretty_time(elapsed_time), avg_time_ms, loss))
+
+
 # ==============================================================================
 #                                                                          TRAIN
 # ==============================================================================
