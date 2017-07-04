@@ -36,16 +36,22 @@ def random_substring_ids(s, char2id, size=200):
 # ==============================================================================
 class Timer(object):
     def __init__(self):
+        """ Creates a convenient stopwatch-like timer. """
         self.start_time = 0
     
     def start(self):
+        """ Start the timer """
         self.start_time = time.time()
     
     def elapsed(self):
+        """ Return the number of seconds since the timer was started. """
         now = time.time()
         return (now - self.start_time)
     
     def elapsed_string(self):
+        """ Return the amount of elapsed time since the timer was started as a
+            formatted string in format:  "HH:MM:SS"
+        """
         t = self.elapsed()
         hours = int(t // 3600)
         mins = int((t % 3600) // 60)
