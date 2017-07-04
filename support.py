@@ -18,5 +18,9 @@ def random_substring(s, size=200):
     return s[i:i + size]
 
 
+def random_substring_ids(s, char2id, size=200):
+    return [char2id[char] for char in random_substring(s, size=size)]
+
+
 
 
