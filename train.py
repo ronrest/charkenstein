@@ -29,9 +29,9 @@ TEST_RATIO = 0.3
 #       is more efficient.
 print("LOADING DATA FROM TEXT FILES")
 data_files = glob.glob(os.path.join(DATA_DIR, "*.txt"))
-train = ""
-test = ""
-valid = ""
+data_train = ""
+data_test = ""
+data_valid = ""
 for data_file in data_files:
     with open(data_file, mode="r", encoding="utf-8") as fileObj:
         print(" -", data_file)
@@ -44,13 +44,13 @@ for data_file in data_files:
         i_test = i_valid  - int(file_len*TEST_RATIO)
         
         # Split the data into train valid and test sets
-        train += s[:i_test]
-        test += s[i_test:i_valid]
-        valid += s[i_valid:]
+        data_train += s[:i_test]
+        data_test += s[i_test:i_valid]
+        data_valid += s[i_valid:]
 
-print("Chars in train data: {:>15d}".format(len(train)))
-print("Chars in test data:  {:>15d}".format(len(test)))
-print("Chars in valid data: {:>15d}".format(len(valid)))
+print("Chars in train data: {:>15d}".format(len(data_train)))
+print("Chars in test data:  {:>15d}".format(len(data_test)))
+print("Chars in valid data: {:>15d}".format(len(data_valid)))
 
 
 ################################################################################
