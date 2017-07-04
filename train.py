@@ -10,8 +10,8 @@ import glob
 
 from support import random_substring_ids, str2tensor
 from support import id2char, char2id, n_chars
-
 from support import nn, torch, Variable
+from model import Model
 
 ROOT_DIR = ""
 DATA_DIR = os.path.join(ROOT_DIR, "data")
@@ -19,6 +19,14 @@ PARAMS_FILE = os.path.join(ROOT_DIR, "params","parameters.params")
 
 VALID_RATIO = 0.1
 TEST_RATIO = 0.3
+
+# MODEL HYPER-PARAMETERS
+SAMPLE_LENGTH = 200
+N_HIDDEN = 100
+N_LAYERS = 1
+EMBED_SIZE = 64
+DROPOUT = 0.7
+ALPHA = 0.01
 
 
 ################################################################################
@@ -131,6 +139,23 @@ def train(model, X, Y, loss_func, optimizer):
     
     # Return the average loss over the batch of sequences
     return loss.data[0] / sample_length
+
+
+################################################################################
+#                                                                          MODEL
+################################################################################
+# CREATE THE MODEL
+model = Model(in_size=n_chars,
+              embed_size=EMBED_SIZE,
+              h_size=N_HIDDEN,
+              out_size=n_chars,
+              n_layers=N_LAYERS,
+              dropout=DROPOUT)
+
+
+# SPECIFY LOSS AND OPTIMIZER FUNCTIONS
+loss_func = nn.CrossEntropyLoss()
+optimizer = torch.optim.Adam(model.parameters(), lr=alpha)
 
 
 
