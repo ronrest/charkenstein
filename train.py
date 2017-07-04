@@ -99,11 +99,11 @@ def random_training_batch(data, char2id, length=200, batch_size=1):
 # ==============================================================================
 #                                                                          TRAIN
 # ==============================================================================
-def train(model, X, Y, loss_func, optimizer):
+def train(model, X, Y):
     """ Given a model, the input and target labels representing a batch of
         sequences of characters, it performs a full training step for those
-        sequences of characters, updating the model parameters based on the
-        specified loss and optimizer function.
+        sequences of characters, updating the model parameters. based on the
+        loss and optimizer of the model.
     
     Args:
         model:      (Model object)
@@ -112,8 +112,6 @@ def train(model, X, Y, loss_func, optimizer):
                     The input tensor of shape: [batch, sequence_length]
         Y:          (torch Variable)
                     The output labels tensor of shape: [batch, sequence_length]
-        loss_func:  The torch loss function.
-        optimizer:  The torch optimizer function.
 
     Returns:
         Returns the average loss over the batch of sequences.
@@ -131,11 +129,11 @@ def train(model, X, Y, loss_func, optimizer):
     loss = 0
     for i in range(sample_length):
         output, hidden = model(X[:,i], hidden)
-        loss += loss_func(output, Y[:,i])
+        loss += model.loss_func(output, Y[:,i])
     
     # Calculate gradients, and update parameter weights
     loss.backward()
-    optimizer.step()
+    model.optimizer.step()
     
     # Return the average loss over the batch of sequences
     return loss.data[0] / sample_length
@@ -158,4 +156,3 @@ model.update_learning_rate(ALPHA)
 # SPECIFY LOSS AND OPTIMIZER FUNCTIONS
 loss_func = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=ALPHA)
-
