@@ -10,6 +10,7 @@ import glob
 
 from support import random_substring_ids, str2tensor
 from support import id2char, char2id, n_chars
+from support import Timer, pretty_time
 from support import nn, torch, Variable
 from model import Model
 
@@ -137,6 +138,45 @@ def train(model, X, Y):
     
     # Return the average loss over the batch of sequences
     return loss.data[0] / sample_length
+
+
+def train_n_steps(model, train_data, n_steps=1000, batch_size=32, feedback_every=1000):
+    total_timer = Timer()
+    feedback_timer = Timer()
+    total_timer.start()
+    feedback_timer.start()
+    
+    total_loss = 0
+    feedback_loss = 0
+    for step in range(1, n_steps + 1):
+        # Perform a training step
+        X, Y = random_training_batch(train_data,char2id,SAMPLE_LENGTH,batch_size)
+        loss = train(model, X, Y)
+        
+        # Increment losses
+        total_loss += loss
+        feedback_loss += loss
+        
+        # Print Feedback
+        if (step > 0) and (step % feedback_every == 0):
+            # Average Loss over feedback steps, and avg train time per sample
+            avg_feedback_loss = feedback_loss / feedback_every
+            avg_train_time = feedback_timer.elapsed()/feedback_every/batch_size
+            
+            print_train_feedback(step,
+                                 total_steps=n_steps,
+                                 loss=avg_feedback_loss,
+                                 elapsed_time=total_timer.elapsed(),
+                                 avg_time=avg_train_time)
+            
+            # Reset timer and loss for feedback cycle
+            feedback_timer.start()
+            feedback_loss = 0
+    
+    # Return the average loss, and average time
+    avg_time = total_timer.elapsed() / n_steps / batch_size
+    avg_loss = total_loss / n_steps
+    return avg_loss, avg_time
 
 
 ################################################################################
