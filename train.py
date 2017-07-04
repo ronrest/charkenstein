@@ -51,7 +51,18 @@ print("Chars in test data:  {:>15d}".format(len(test)))
 print("Chars in valid data: {:>15d}".format(len(valid)))
 
 
+
+# ==============================================================================
+#                                                          RANDOM_TRAINING_BATCH
+# ==============================================================================
 def random_training_batch(data, char2id, length=200, batch_size=1):
+    """ Returns a two torch Variables X, Y, each of size
+            batch_size x (length-1)
+
+        Where each row is a random substring from the `data` string
+        represented as a sequence of character ids.
+        
+    """
     # Randomly sample a substring for each item in batch size
     batch = []
     for i in range(batch_size):
