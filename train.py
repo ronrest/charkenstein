@@ -88,5 +88,29 @@ def random_training_batch(data, char2id, length=200, batch_size=1):
 
 # X, Y = random_training_batch(train, char2id, length=20, batch_size=5)
 
+def train(model, X, Y, loss_func, optimizer):
+    # Get dimensions of input and target labels
+    msg = "X and Y should be shape [n_batch, sequence_length]"
+    assert len(X.size()) == len(Y.size()) == 2, msg
+    batch_size, sample_length = X.size()
+
+    # Initialize hidden state and reset the accumulated gradients
+    hidden = model.init_hidden(batch_size)
+    model.zero_grad()
+    
+    # Loop through each item in the sequence
+    loss = 0
+    for i in range(sample_length):
+        output, hidden = model(X[:,i], hidden)
+        loss += loss_func(output, Y[:,i])
+    
+    # Calculate gradients, and update parameter weights
+    loss.backward()
+    optimizer.step()
+    
+    # Return the average loss over the batch of sequences
+    return loss.data[0] / sample_length
+
+
 
 
