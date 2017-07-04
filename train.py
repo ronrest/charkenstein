@@ -97,7 +97,26 @@ def random_training_batch(data, char2id, length=200, batch_size=1):
 
 # X, Y = random_training_batch(train, char2id, length=20, batch_size=5)
 
+
+# ==============================================================================
+#                                                           PRINT_TRAIN_FEEDBACK
+# ==============================================================================
 def print_train_feedback(step, total_steps, loss, elapsed_time, avg_time):
+    """ Prints a line of feedback about the training process such as:
+    
+         3000 (  18.8%) 00:00:02 | AVG_MS:  25.47 | LOSS:  2.421
+    
+          ^      ^       ^         ^                ^
+          |      |       |         |                L Average Loss
+          |      |       |         |
+          |      |       |         L Average train time per sample
+          |      |       |
+          |      |       L Elapsed time
+          |      |
+          |      L Progress
+          |
+          L Step number
+    """
     progress = 100 * float(step) / total_steps
     avg_time_ms = avg_time * 1000
     
