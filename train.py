@@ -155,8 +155,6 @@ model = Model(in_size=n_chars,
 
 # SPECIFY LOSS AND OPTIMIZER FUNCTIONS
 loss_func = nn.CrossEntropyLoss()
-optimizer = torch.optim.Adam(model.parameters(), lr=alpha)
-
-
+optimizer = torch.optim.Adam(model.parameters(), lr=ALPHA)
 
 
