@@ -23,6 +23,7 @@ TEST_RATIO = 0.3
 
 # MODEL HYPER-PARAMETERS
 SAMPLE_LENGTH = 200
+BATCH_SIZE = 256
 N_HIDDEN = 100
 N_LAYERS = 1
 EMBED_SIZE = 64
@@ -225,6 +226,38 @@ model = Model(in_size=n_chars,
 model.update_learning_rate(ALPHA)
 
 
-# SPECIFY LOSS AND OPTIMIZER FUNCTIONS
-loss_func = nn.CrossEntropyLoss()
-optimizer = torch.optim.Adam(model.parameters(), lr=ALPHA)
+
+################################################################################
+#                                                                TRAIN THE MODEL
+################################################################################
+num_epochs = 10
+# Technically the following calculation for `samples_per_epoch` is incorrect,
+# since we are randomly sampling, and not doing a sliding window of the samples
+# but it is still a useful approximation to use.
+samples_per_epoch = int(len(data_train))
+steps_per_epoch = int(samples_per_epoch / BATCH_SIZE)
+feedbacks_per_epoch = 10
+
+try:
+    for i in range(num_epochs):
+        print("="*60)
+        print("EPOCH ", i)
+        print("="*60)
+        train_n_steps(model,
+                      data_train,
+                      n_steps=steps_per_epoch,
+                      batch_size=BATCH_SIZE,
+                      feedback_every=int(steps_per_epoch / feedbacks_per_epoch))
+        
+        # TODO: evaluate on validation data
+        # TODO: take snapshots
+        # TODO: printouts
+        # TODO: generate text
+        # TODO: overall progress
+        # TODO: elapsed time
+
+except KeyboardInterrupt:
+    print("\n A keyboard interupt wsa deected. ")
+    print("TODO: Save the model")
+
+print("DONE!!!")
