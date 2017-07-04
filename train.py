@@ -11,6 +11,8 @@ import glob
 from support import random_substring_ids, str2tensor
 from support import id2char, char2id, n_chars
 
+from support import nn, torch, Variable
+
 ROOT_DIR = ""
 DATA_DIR = os.path.join(ROOT_DIR, "data")
 PARAMS_FILE = os.path.join(ROOT_DIR, "params","parameters.params")
