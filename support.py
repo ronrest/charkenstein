@@ -1,3 +1,4 @@
+import os
 import random
 import string
 import torch
@@ -72,3 +73,11 @@ class Timer(object):
         return pretty_time(self.elapsed())
 
 
+def take_snapshot(model, epoch, loss, name, dir, verbose=True):
+    template = "{model}_{epoch:05d}_{loss:06.3f}.params"
+    filename = template.format(model=name, epoch=epoch, loss=loss)
+    filepath = os.path.join(dir, filename)
+
+    torch.save(model.state_dict(), filepath)
+    if verbose:
+        print("SAVED SNAPSHOT ({:06.3f})".format(loss))
