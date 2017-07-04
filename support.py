@@ -73,7 +73,21 @@ class Timer(object):
         return pretty_time(self.elapsed())
 
 
+
+# ==============================================================================
+#                                                                  TAKE_SNAPSHOT
+# ==============================================================================
 def take_snapshot(model, epoch, loss, name, dir, verbose=True):
+    """ Takes a snapshot of all the parameter values of a model.
+    
+    Args:
+        model: (Model Object)
+        epoch: (int)
+        loss:  (float)
+        name:  (str) model name
+        dir:   (str) directory where snapshots will be taken
+        verbose: (bool)(default=True) whether it should print out feedback.
+    """
     template = "{model}_{epoch:05d}_{loss:06.3f}.params"
     filename = template.format(model=name, epoch=epoch, loss=loss)
     filepath = os.path.join(dir, filename)
