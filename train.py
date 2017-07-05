@@ -255,6 +255,7 @@ evals = {"train_loss": [],
 
 
 num_epochs = 10
+
 # Technically the following calculation for `samples_per_epoch` is incorrect,
 # since we are randomly sampling, and not doing a sliding window of the samples
 # but it is still a useful approximation to use.
@@ -288,6 +289,8 @@ try:
         
         # Take Snapshot
         take_snapshot(model, epoch=i, loss=eval_loss, name=MODEL_NAME, dir=PARAMS_DIR)
+
+        # TODO: Save a sample numerous generated strings to files at each epoch
         # Print a sample of generated text
         print_sample_generation(model, char2id, exploration=0.85)
 
@@ -300,3 +303,4 @@ except KeyboardInterrupt:
     print("TODO: Save the model")
 
 print("DONE!!!")
+
