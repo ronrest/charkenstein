@@ -264,7 +264,9 @@ try:
         # TODO: evaluate on validation data
         # TODO: take snapshots
         # TODO: printouts
-        # TODO: generate text
+        # Print a sample of generated text
+        print_sample_generation(model, char2id, exploration=0.85)
+
         # TODO: overall progress
         # TODO: elapsed time
 
