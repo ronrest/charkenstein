@@ -76,7 +76,15 @@ def eval_sequence(model, X, Y):
     # Return the average loss over the batch of sequences
     return loss.data[0] / sample_length
 
+
+# ==============================================================================
+#                                                                     EVAL_MODEL
+# ==============================================================================
 def eval_model(model, data, char2id, seq_length=200, batch_size=32):
+    """ Evaluates the model on the desired evaluation data.
+        Returns a tuple:
+            avg_loss, total_time
+    """
     data_len = len(data)
     n_steps = int(data_len / seq_length/ batch_size)
     
