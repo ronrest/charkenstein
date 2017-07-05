@@ -136,7 +136,7 @@ def take_snapshot(model, epoch, loss, name, dir, verbose=True):
     maybe_mkdir(dir)
     torch.save(model.state_dict(), filepath)
     if verbose:
-        print("SAVED SNAPSHOT ({:06.3f})".format(loss))
+        print("SAVED SNAPSHOT: {}".format(filename))
 
 
 # ==============================================================================
