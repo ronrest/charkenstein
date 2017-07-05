@@ -15,8 +15,10 @@ from support import nn, torch, Variable
 from model import Model
 
 ROOT_DIR = ""
+MODEL_NAME = "modelA"
+
 DATA_DIR = os.path.join(ROOT_DIR, "data")
-PARAMS_FILE = os.path.join(ROOT_DIR, "params","parameters.params")
+PARAMS_DIR = os.path.join(ROOT_DIR, "snapshots", MODEL_NAME)
 
 VALID_RATIO = 0.1
 TEST_RATIO = 0.3
