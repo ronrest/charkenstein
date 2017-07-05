@@ -100,9 +100,6 @@ def random_training_batch(data, char2id, length=200, batch_size=1):
     return X, Y
     
 
-# X, Y = random_training_batch(train, char2id, length=20, batch_size=5)
-
-
 # ==============================================================================
 #                                                           PRINT_TRAIN_FEEDBACK
 # ==============================================================================
@@ -225,8 +222,6 @@ def print_sample_generation(model, char2id, seed_str="A", length=100, exploratio
     print("-"*60, "\nGENERATED SAMPLE\n", "-"*60, sep="")
     print(generate(model, char2id, seed_str="A", length=100, exploration=0.85))
     print("."*60)
-
-
 
 
 ################################################################################
