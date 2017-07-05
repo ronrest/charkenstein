@@ -2,7 +2,17 @@ from support import Timer
 from support import Variable, torch
 
 
+# ==============================================================================
+#                                                              CREATE_EVAL_BATCH
+# ==============================================================================
 def create_eval_batch(data, char2id, start_i, seq_length=200, batch_size=1):
+    """ Returns a two torch Variables X, Y, each of size
+            batch_size x (length-1)
+
+        Where each row is a substring from the `data` string
+        represented as a sequence of character ids.
+
+    """
     # For each batch, sample a slice of the data string and convert to char ids
     batch = []
     for batch_id in range(batch_size):
