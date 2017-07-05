@@ -12,6 +12,7 @@ from support import random_substring_ids, str2tensor
 from support import id2char, char2id, n_chars
 from support import Timer, pretty_time
 from support import nn, torch, Variable
+from support import generate
 from model import Model
 
 ROOT_DIR = ""
@@ -212,6 +213,15 @@ def train_n_steps(model, train_data, n_steps=1000, batch_size=32, feedback_every
     avg_time = total_timer.elapsed() / n_steps / batch_size
     avg_loss = total_loss / n_steps
     return avg_loss, avg_time
+
+# ==============================================================================
+#                                                        PRINT_SAMPLE_GENERATION
+# ==============================================================================
+def print_sample_generation(model, char2id, seed_str="A", length=100, exploration=0.85):
+    print("="*60, "\nGENERATED SAMPLE\n", "="*60, sep="")
+    print(generate(model, char2id, seed_str="A", length=100, exploration=0.85))
+    print("="*60)
+
 
 
 ################################################################################
