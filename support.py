@@ -12,6 +12,19 @@ id2char = list(string.printable)
 char2id = {char: id for id, char in enumerate(id2char)}
 n_chars = len(id2char)
 
+def maybe_mkdir(path):
+    if not os.path.exists(path):
+        os.makedirs(path)
+
+
+def get_parent_directory(file):
+    return os.path.dirname(file)
+
+
+def maybe_make_pardir(file):
+    maybe_mkdir(get_parent_directory(file))
+
+
 
 # ==============================================================================
 #                                                               RANDOM_SUBSTRING
