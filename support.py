@@ -133,6 +133,7 @@ def take_snapshot(model, epoch, loss, name, dir, verbose=True):
     filename = template.format(model=name, epoch=epoch, loss=loss)
     filepath = os.path.join(dir, filename)
 
+    maybe_mkdir(dir)
     torch.save(model.state_dict(), filepath)
     if verbose:
         print("SAVED SNAPSHOT ({:06.3f})".format(loss))
