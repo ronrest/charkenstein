@@ -14,6 +14,7 @@ from support import Timer, pretty_time
 from support import nn, torch, Variable
 from support import generate
 from model import Model
+from eval import eval_model
 
 ROOT_DIR = ""
 MODEL_NAME = "modelA"
@@ -246,6 +247,13 @@ model.update_learning_rate(ALPHA)
 ################################################################################
 #                                                                TRAIN THE MODEL
 ################################################################################
+evals = {"train_loss": [],
+         "valid_loss": [],
+         "train_time": [],
+         "valid_time": [],
+         }
+
+
 num_epochs = 10
 # Technically the following calculation for `samples_per_epoch` is incorrect,
 # since we are randomly sampling, and not doing a sliding window of the samples
@@ -265,8 +273,15 @@ try:
                       batch_size=BATCH_SIZE,
                       feedback_every=int(steps_per_epoch / feedbacks_per_epoch))
         
-        # TODO: evaluate on validation data
         # TODO: printouts
+        # Evaluate on validation data
+        eval_loss, eval_time = eval_model(model, data_valid, char2id,
+                                          seq_length=SAMPLE_LENGTH,
+                                          batch_size=BATCH_SIZE)
+        evals["valid_loss"].append(eval_loss)
+        evals["valid_time"].append(eval_time)
+
+        
         # Take Snapshot
         take_snapshot(model, epoch=i, loss=eval_loss, name=MODEL_NAME, dir=PARAMS_DIR)
         # Print a sample of generated text
