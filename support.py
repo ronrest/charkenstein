@@ -12,16 +12,34 @@ id2char = list(string.printable)
 char2id = {char: id for id, char in enumerate(id2char)}
 n_chars = len(id2char)
 
+# ==============================================================================
+#                                                                    MAYBE_MKDIR
+# ==============================================================================
 def maybe_mkdir(path):
+    """ Checks if a directory path exists on the system, if it does not, then
+        it creates that directory (and any parent directories needed to
+        create that directory)
+    """
     if not os.path.exists(path):
         os.makedirs(path)
 
 
+# ==============================================================================
+#                                                           GET_PARENT_DIRECTORY
+# ==============================================================================
 def get_parent_directory(file):
+    """ Given a file path, it returns the parent directory of that file. """
     return os.path.dirname(file)
 
 
+# ==============================================================================
+#                                                              MAYBE_MAKE_PARDIR
+# ==============================================================================
 def maybe_make_pardir(file):
+    """ Takes a path to a file, and creates the necessary directory structure
+        on the system to ensure that the parent directory exists (if it does
+        not already exist)
+    """
     maybe_mkdir(get_parent_directory(file))
 
 
@@ -179,4 +197,3 @@ def generate(model, char2id, seed_str='A', length=100, exploration=0.5):
     model.train(train_mode)
 
     return generated
-
