@@ -1,3 +1,7 @@
+# TODO: There is a lot of code overlap between the functions here and the
+#       training ones. Try to create separate functions that will be shared
+#       by both.
+
 from support import Timer
 from support import Variable, torch
 
@@ -107,3 +111,4 @@ def eval_model(model, data, char2id, seq_length=200, batch_size=32):
     # Return the average loss, and total time
     avg_loss = total_loss / n_steps
     return avg_loss, timer.elapsed()
+
