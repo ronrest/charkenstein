@@ -32,7 +32,25 @@ def create_eval_batch(data, char2id, start_i, seq_length=200, batch_size=1):
     
     return X, Y
 
+
+# ==============================================================================
+#                                                                  EVAL_SEQUENCE
+# ==============================================================================
 def eval_sequence(model, X, Y):
+    """ Given a model, the input and target labels representing a batch of
+        sequences of characters, it returns the average loss of that sequence.
+
+    Args:
+        model:      (Model object)
+                    The model containing the neural net architecture.
+        X:          (torch Variable)
+                    The input tensor of shape: [batch, sequence_length]
+        Y:          (torch Variable)
+                    The output labels tensor of shape: [batch, sequence_length]
+
+    Returns:
+        Returns the average loss over the batch of sequences.
+    """
     # Get dimensions of input and target labels
     msg = "X and Y should be shape [n_batch, sequence_length]"
     assert len(X.size()) == len(Y.size()) == 2, msg
