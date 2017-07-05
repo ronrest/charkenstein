@@ -262,6 +262,8 @@ samples_per_epoch = int(len(data_train))
 steps_per_epoch = int(samples_per_epoch / BATCH_SIZE)
 feedbacks_per_epoch = 10
 
+timer = Timer()
+timer.start()
 try:
     for i in range(num_epochs):
         print("="*60)
@@ -273,7 +275,6 @@ try:
                       batch_size=BATCH_SIZE,
                       feedback_every=int(steps_per_epoch / feedbacks_per_epoch))
         
-        # TODO: printouts
         evals["train_loss"].append(train_loss)
         evals["train_time"].append(epoch_time)
 
@@ -290,8 +291,9 @@ try:
         # Print a sample of generated text
         print_sample_generation(model, char2id, exploration=0.85)
 
-        # TODO: overall progress
-        # TODO: elapsed time
+        # Printouts
+        epoch_template = "EPOCH={: 3d} ({}) TRAIN_LOSS={: 7.3f} VALID_LOSS={: 7.3f}"
+        print(epoch_template.format(i, timer.elapsed_string(), train_loss, eval_loss))
 
 except KeyboardInterrupt:
     print("\n A keyboard interupt wsa deected. ")
