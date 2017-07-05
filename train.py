@@ -176,7 +176,10 @@ def train(model, X, Y):
 #                                                                  TRAIN_N_STEPS
 # ==============================================================================
 def train_n_steps(model, train_data, n_steps=1000, batch_size=32, feedback_every=1000):
-    """ Trains the model for n_steps number of steps """
+    """ Trains the model for n_steps number of steps.
+        Returns a tuple:
+            avg_loss, total_train_time
+    """
     total_timer = Timer()
     feedback_timer = Timer()
     total_timer.start()
@@ -209,10 +212,10 @@ def train_n_steps(model, train_data, n_steps=1000, batch_size=32, feedback_every
             feedback_timer.start()
             feedback_loss = 0
     
-    # Return the average loss, and average time
-    avg_time = total_timer.elapsed() / n_steps / batch_size
+    # Return the average loss, and total time
     avg_loss = total_loss / n_steps
-    return avg_loss, avg_time
+    return avg_loss, total_timer.elapsed()
+
 
 # ==============================================================================
 #                                                        PRINT_SAMPLE_GENERATION
