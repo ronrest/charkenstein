@@ -84,7 +84,6 @@ class Timer(object):
         return pretty_time(self.elapsed())
 
 
-
 # ==============================================================================
 #                                                                  TAKE_SNAPSHOT
 # ==============================================================================
@@ -106,3 +105,44 @@ def take_snapshot(model, epoch, loss, name, dir, verbose=True):
     torch.save(model.state_dict(), filepath)
     if verbose:
         print("SAVED SNAPSHOT ({:06.3f})".format(loss))
+
+
+def generate(model, char2id, seed_str='A', length=100, exploration=0.5):
+    """ Generates a new string one character at a time of specified length
+    """
+    # Store the original training mode, and turn training mode Off
+    train_mode = model.training
+    model.train(False)
+
+    # Initializations
+    hidden = model.init_hidden(batch_size=1)
+    generated = seed_str
+
+    # Loop through each char in seed string to prepare hidden states
+    seed_input = str2tensor(seed_str, char2id)
+    for char_id in range(len(seed_str) - 1):
+        _, hidden = model(char_id, hidden)
+    
+    # CONTINUE GENERATING
+    for _ in range(length):
+        # Use the previous char as input to the current timestep
+        last_char_id = str2tensor(generated[-1], char2id)
+        output, hidden = model(last_char_id, hidden)
+        
+        # Redistribute the relative probability that less likely items will
+        # be chosen based on exploration ratio. NOTE: this is not a
+        # real probability distribution, but weights for each element.
+        output_dist = output.data.view(-1).div(exploration).exp()
+
+        # Sample from redistributed probabilities as a multinomial distribution
+        chosen_id = torch.multinomial(output_dist, num_samples=1)[0]
+
+        # Add generated character to string
+        generated_char = id2char[chosen_id]
+        generated += generated_char
+
+    # Restores the original training mode
+    model.train(train_mode)
+
+    return generated
+
