@@ -107,8 +107,29 @@ def take_snapshot(model, epoch, loss, name, dir, verbose=True):
         print("SAVED SNAPSHOT ({:06.3f})".format(loss))
 
 
+# ==============================================================================
+#                                                                       GENERATE
+# ==============================================================================
 def generate(model, char2id, seed_str='A', length=100, exploration=0.5):
     """ Generates a new string one character at a time of specified length
+        based on the models currently trained weights.
+
+    Args:
+        model:       (Model object) The pytorch model to use
+        char2id:     (dict) Maps characters to character indices
+        seed_str:    (str)
+                     The generated text will start with this text, and
+                     continue generating new characters from there onwards.
+        length:      (int) Length of sequence you want to generate
+        exploration: (float between (0,1] )
+                     The closer the value is to 0, the more likely it is
+                     to just chose the predicted char with highest probability
+                     (making conservative predictions). The closer it is to 1,
+                     the more likely it will explore other possibilities too
+                     and increases chance of making more adventurous sequences.
+    
+    Returns: (str)
+        The generated string of desired length.
     """
     # Store the original training mode, and turn training mode Off
     train_mode = model.training
