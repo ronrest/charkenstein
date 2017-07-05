@@ -265,7 +265,7 @@ feedbacks_per_epoch = 10
 try:
     for i in range(num_epochs):
         print("="*60)
-        print("EPOCH ", i)
+        print("EPOCH {}/{} ({:0.2f}%)".format(i, num_epochs, 100*(i/num_epochs)))
         print("="*60)
         train_loss, epoch_time = train_n_steps(model,
                       data_train,
