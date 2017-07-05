@@ -267,13 +267,16 @@ try:
         print("="*60)
         print("EPOCH ", i)
         print("="*60)
-        loss, epoch_time = train_n_steps(model,
+        train_loss, epoch_time = train_n_steps(model,
                       data_train,
                       n_steps=steps_per_epoch,
                       batch_size=BATCH_SIZE,
                       feedback_every=int(steps_per_epoch / feedbacks_per_epoch))
         
         # TODO: printouts
+        evals["train_loss"].append(train_loss)
+        evals["train_time"].append(epoch_time)
+
         # Evaluate on validation data
         eval_loss, eval_time = eval_model(model, data_valid, char2id,
                                           seq_length=SAMPLE_LENGTH,
