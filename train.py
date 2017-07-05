@@ -247,6 +247,7 @@ model.update_learning_rate(ALPHA)
 ################################################################################
 #                                                                TRAIN THE MODEL
 ################################################################################
+# TODO: use the evals object from the multi-digit recognition project.
 evals = {"train_loss": [],
          "valid_loss": [],
          "train_time": [],
