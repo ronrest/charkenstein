@@ -36,7 +36,13 @@ def random_substring_ids(s, char2id, size=200):
 
 
 # ==============================================================================
+#                                                                     STR2TENSOR
+# ==============================================================================
 def str2tensor(s, char2id):
+    """ Given a string, and a dictionary that maps each character to an
+        integer representing the embedding index, it converts the sequence
+        of characters in s to a pytorch Variable tensor of character ids.
+    """
     ids = [char2id[char] for char in s]
     return (Variable(torch.LongTensor(ids)))
 
