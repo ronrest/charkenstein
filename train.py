@@ -8,7 +8,7 @@ import unidecode
 
 import glob
 
-from support import random_substring_ids, str2tensor
+from support import random_substring_ids, str2tensor, take_snapshot
 from support import id2char, char2id, n_chars
 from support import Timer, pretty_time
 from support import nn, torch, Variable
@@ -265,8 +265,9 @@ try:
                       feedback_every=int(steps_per_epoch / feedbacks_per_epoch))
         
         # TODO: evaluate on validation data
-        # TODO: take snapshots
         # TODO: printouts
+        # Take Snapshot
+        take_snapshot(model, epoch=i, loss=eval_loss, name=MODEL_NAME, dir=PARAMS_DIR)
         # Print a sample of generated text
         print_sample_generation(model, char2id, exploration=0.85)
 
