@@ -258,7 +258,7 @@ try:
         print("="*60)
         print("EPOCH ", i)
         print("="*60)
-        train_n_steps(model,
+        loss, epoch_time = train_n_steps(model,
                       data_train,
                       n_steps=steps_per_epoch,
                       batch_size=BATCH_SIZE,
