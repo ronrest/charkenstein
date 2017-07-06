@@ -220,7 +220,7 @@ def train_n_steps(model, train_data, n_steps=1000, batch_size=32, feedback_every
 # ==============================================================================
 def print_sample_generation(model, char2id, seed_str="A", length=100, exploration=0.85):
     print("-"*60, "\nGENERATED SAMPLE\n", "-"*60, sep="")
-    print(generate(model, char2id, seed_str="A", length=100, exploration=0.85))
+    print(generate(model, char2id, seed_str=seed_str, length=100, exploration=0.85))
     print("."*60)
 
 
