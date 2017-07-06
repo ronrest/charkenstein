@@ -173,8 +173,8 @@ def generate(model, char2id, seed_str='A', length=100, exploration=0.5):
 
     # Loop through each char in seed string to prepare hidden states
     seed_input = str2tensor(seed_str, char2id)
-    for char_id in range(len(seed_str) - 1):
-        _, hidden = model(char_id, hidden)
+    for i in range(len(seed_str) - 1):
+        _, hidden = model(seed_input[i], hidden)
     
     # CONTINUE GENERATING
     for _ in range(length):
