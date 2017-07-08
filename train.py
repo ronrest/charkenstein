@@ -8,7 +8,8 @@ import unidecode
 
 import glob
 
-from support import random_substring_ids, str2tensor, take_snapshot
+from support import random_substring_ids, str2tensor
+from support import pickle2obj, obj2pickle, take_snapshot
 from support import id2char, char2id, n_chars
 from support import Timer, pretty_time
 from support import nn, torch, Variable
@@ -16,11 +17,13 @@ from support import generate
 from model import Model
 from eval import eval_model
 
+
 ROOT_DIR = ""
 MODEL_NAME = "modelA"
 
 DATA_DIR = os.path.join(ROOT_DIR, "data")
 SNAPSHOTS_DIR = os.path.join(ROOT_DIR, "snapshots", MODEL_NAME)
+EVALS_FILE = os.path.join(SNAPSHOTS_DIR, MODEL_NAME + "_evals.pickle")
 
 VALID_RATIO = 0.1
 TEST_RATIO = 0.3
@@ -285,13 +288,14 @@ try:
         evals["valid_time"].append(eval_time)
 
         
-        # Take Snapshot
-
         # TODO: Save a sample numerous generated strings to files at each epoch
         # Print a sample of generated text
         print_sample_generation(model, char2id, exploration=0.85)
 
+        # Take Snapshots of parameters and evaluation dictionary
         take_snapshot(model, epoch=i, loss=eval_loss, name=MODEL_NAME, dir=SNAPSHOTS_DIR)
+        obj2pickle(evals, EVALS_FILE)
+                
         # Printouts
         epoch_template = "EPOCH={: 3d} ({}) TRAIN_LOSS={: 7.3f} VALID_LOSS={: 7.3f}"
         print(epoch_template.format(i, timer.elapsed_string(), train_loss, eval_loss))
