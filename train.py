@@ -253,7 +253,6 @@ evals = {"train_loss": [],
          "alpha": [],
          }
 
-
 num_epochs = 10
 
 # Technically the following calculation for `samples_per_epoch` is incorrect,
@@ -267,6 +266,7 @@ timer = Timer()
 timer.start()
 try:
     for i in range(num_epochs):
+        print()
         print("="*60)
         print("EPOCH {}/{} ({:0.2f}%)".format(i, num_epochs, 100*(i/num_epochs)))
         print("="*60)
@@ -286,7 +286,6 @@ try:
                                           batch_size=BATCH_SIZE)
         evals["valid_loss"].append(eval_loss)
         evals["valid_time"].append(eval_time)
-
         
         # TODO: Save a sample numerous generated strings to files at each epoch
         # Print a sample of generated text
@@ -297,8 +296,8 @@ try:
         obj2pickle(evals, EVALS_FILE)
                 
         # Printouts
-        epoch_template = "EPOCH={: 3d} ({}) TRAIN_LOSS={: 7.3f} VALID_LOSS={: 7.3f}"
-        print(epoch_template.format(i, timer.elapsed_string(), train_loss, eval_loss))
+        epoch_template = "({}) TRAIN_LOSS={: 7.3f} VALID_LOSS={: 7.3f}"
+        print(epoch_template.format(timer.elapsed_string(), train_loss, eval_loss))
 
 except KeyboardInterrupt:
     print("\n A keyboard interupt wsa deected. ")
