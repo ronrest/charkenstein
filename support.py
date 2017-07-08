@@ -73,7 +73,13 @@ def obj2pickle(obj, file, protocol=-1):
     print(" -- [DONE]")
 
 
+# ==============================================================================
+#                                                                     PICKLE2OBJ
+# ==============================================================================
 def pickle2obj(file):
+    """ Takes a filepath to a pickle object, and returns a python object
+        specified by that pickle file.
+    """
     s = file if len(file) < 41 else (file[:10] + "..." + file[-28:])
     print("Loading: ", s, end="")
 
