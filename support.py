@@ -73,6 +73,17 @@ def obj2pickle(obj, file, protocol=-1):
     print(" -- [DONE]")
 
 
+def pickle2obj(file):
+    s = file if len(file) < 41 else (file[:10] + "..." + file[-28:])
+    print("Loading: ", s, end="")
+
+    with open(file, mode="rb") as fileObj:
+        obj = pickle.load(fileObj)
+
+    print(" -- [DONE]")
+    return obj
+
+
 
 # ==============================================================================
 #                                                               RANDOM_SUBSTRING
