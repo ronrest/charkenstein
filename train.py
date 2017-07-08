@@ -227,8 +227,29 @@ def print_sample_generation(model, char2id, seed_str="A", length=100, exploratio
     print("."*60)
 
 
+# ==============================================================================
+#                                                                 TRAIN_N_EPOCHS
+# ==============================================================================
 def train_n_epochs(model, data, data_valid, evals, n_epochs,
                    feedbacks_per_epoch=10, alpha_decay=1.0):
+    """ Train the model for a desired amount of epochs.
+        Automatically takes snapshots of the parameters after each epoch, and
+        monitors the progress.
+
+    Args:
+        model:
+        data:       (str) Training data
+        data_valid: (str) Validation data
+        evals:      (dict of lists)
+                    The dict that stores the losses and times for each epoch
+        n_epochs:   (int) Number of epochs to train for
+        feedbacks_per_epoch: (int) Max number of progress printouts per epoch
+        alpha_decay: (float)(default=1.0)
+                    How much to decay the alpha by after each epoch.
+
+    Returns: (dict)
+        - evals - the dictionary that monitors the losses, and times
+    """
     timer = Timer()
     timer.start()
     
