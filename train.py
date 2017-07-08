@@ -247,6 +247,7 @@ evals = {"train_loss": [],
          "valid_loss": [],
          "train_time": [],
          "valid_time": [],
+         "alpha": [],
          }
 
 
@@ -274,6 +275,7 @@ try:
         
         evals["train_loss"].append(train_loss)
         evals["train_time"].append(epoch_time)
+        evals["alpha"].append(model.alpha)
 
         # Evaluate on validation data
         eval_loss, eval_time = eval_model(model, data_valid, char2id,
