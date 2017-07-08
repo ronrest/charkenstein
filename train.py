@@ -285,8 +285,7 @@ def train_n_epochs(model, data, data_valid, evals, n_epochs,
             model.update_learning_rate(model.alpha * alpha_decay)
         
         print("- DONE")
-        return train_loss, eval_loss, timer.elapsed()
-    
+        return evals
     
     # HANDLE EARLY TERMINATION
     except KeyboardInterrupt:
