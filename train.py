@@ -20,7 +20,7 @@ ROOT_DIR = ""
 MODEL_NAME = "modelA"
 
 DATA_DIR = os.path.join(ROOT_DIR, "data")
-PARAMS_DIR = os.path.join(ROOT_DIR, "snapshots", MODEL_NAME)
+SNAPSHOTS_DIR = os.path.join(ROOT_DIR, "snapshots", MODEL_NAME)
 
 VALID_RATIO = 0.1
 TEST_RATIO = 0.3
@@ -284,12 +284,12 @@ try:
 
         
         # Take Snapshot
-        take_snapshot(model, epoch=i, loss=eval_loss, name=MODEL_NAME, dir=PARAMS_DIR)
 
         # TODO: Save a sample numerous generated strings to files at each epoch
         # Print a sample of generated text
         print_sample_generation(model, char2id, exploration=0.85)
 
+        take_snapshot(model, epoch=i, loss=eval_loss, name=MODEL_NAME, dir=SNAPSHOTS_DIR)
         # Printouts
         epoch_template = "EPOCH={: 3d} ({}) TRAIN_LOSS={: 7.3f} VALID_LOSS={: 7.3f}"
         print(epoch_template.format(i, timer.elapsed_string(), train_loss, eval_loss))
