@@ -9,7 +9,7 @@ import unidecode
 import glob
 
 from support import random_substring_ids, str2tensor
-from support import pickle2obj, obj2pickle, take_snapshot
+from support import pickle2obj, obj2pickle, take_snapshot, epoch_snapshot
 from support import id2char, char2id, n_chars
 from support import Timer, pretty_time
 from support import nn, torch, Variable
@@ -227,6 +227,81 @@ def print_sample_generation(model, char2id, seed_str="A", length=100, exploratio
     print("."*60)
 
 
+def train_n_epochs(model, data, data_valid, evals, n_epochs,
+                   feedbacks_per_epoch=10, alpha_decay=1.0):
+    timer = Timer()
+    timer.start()
+    
+    # CALCULATE NUMBER OF STEPS NEEDED
+    # Technically the following calculation for `samples_per_epoch` is incorrect,
+    # since we are randomly sampling windows, and not dividing the data into an
+    # even number of chunks.
+    # But it is still a useful approximation, that allows us to have more variation
+    # in the training data.
+    samples_per_epoch = int(len(data_train) // SAMPLE_LENGTH)
+    steps_per_epoch = int(samples_per_epoch / BATCH_SIZE)
+    feedback_every = int(steps_per_epoch / feedbacks_per_epoch)
+    
+    try:
+        for i in range(n_epochs):
+            print()
+            print("=" * 60)
+            print("EPOCH {}/{} ({:0.2f}%)".format(i, n_epochs,
+                                                  100 * (i / n_epochs)))
+            print("=" * 60)
+            
+            # TRAIN OVER A SINGLE EPOCH
+            train_loss, epoch_time = train_n_steps(model,
+                                                   data_train,
+                                                   n_steps=steps_per_epoch,
+                                                   batch_size=BATCH_SIZE,
+                                                   feedback_every=feedback_every)
+            
+            evals["train_loss"].append(train_loss)
+            evals["train_time"].append(epoch_time)
+            evals["alpha"].append(model.alpha)
+            
+            # EVALUATE ON VALIDATION DATA
+            eval_loss, eval_time = eval_model(model, data_valid, char2id,
+                                              seq_length=SAMPLE_LENGTH,
+                                              batch_size=BATCH_SIZE)
+            evals["valid_loss"].append(eval_loss)
+            evals["valid_time"].append(eval_time)
+            
+            # TAKE SNAPSHOTS - of parameters and evaluation dictionary
+            epoch_snapshot(model, epoch=i, loss=eval_loss, name=MODEL_NAME,
+                           dir=SNAPSHOTS_DIR)
+            obj2pickle(evals, EVALS_FILE)
+            
+            # FEEDBACK PRINTOUTS
+            # TODO: Save a sample numerous generated strings to files at each epoch
+            # Print a sample of generated text
+            print_sample_generation(model, char2id, exploration=0.85)
+            epoch_template = "({}) TRAIN_LOSS={: 7.3f} VALID_LOSS={: 7.3f}"
+            print(epoch_template.format(timer.elapsed_string(), train_loss,
+                                        eval_loss))
+            
+            # PREPARE MODEL FOR NEXT EPOCH
+            model.update_learning_rate(model.alpha * alpha_decay)
+        
+        print("- DONE")
+        return train_loss, eval_loss, timer.elapsed()
+    
+    
+    # HANDLE EARLY TERMINATION
+    except KeyboardInterrupt:
+        print("\n A keyboard interrupt was triggered at",
+              timer.elapsed_string())
+        
+        # Save parameters as a recovery file
+        file = os.path.join(SNAPSHOTS_DIR, MODEL_NAME + ".recovery_params")
+        take_snapshot(model, file)
+        
+        # Save evals as a recovery file
+        file = os.path.join(SNAPSHOTS_DIR, MODEL_NAME + ".recovery_evals")
+        obj2pickle(evals, file)
+
+
 ################################################################################
 #                                                                          MODEL
 ################################################################################
@@ -253,55 +328,7 @@ evals = {"train_loss": [],
          "alpha": [],
          }
 
-num_epochs = 10
 
-# Technically the following calculation for `samples_per_epoch` is incorrect,
-# since we are randomly sampling, and not doing a sliding window of the samples
-# but it is still a useful approximation to use.
-samples_per_epoch = int(len(data_train))
-steps_per_epoch = int(samples_per_epoch / BATCH_SIZE)
-feedbacks_per_epoch = 10
 
-timer = Timer()
-timer.start()
-try:
-    for i in range(num_epochs):
-        print()
-        print("="*60)
-        print("EPOCH {}/{} ({:0.2f}%)".format(i, num_epochs, 100*(i/num_epochs)))
-        print("="*60)
-        train_loss, epoch_time = train_n_steps(model,
-                      data_train,
-                      n_steps=steps_per_epoch,
-                      batch_size=BATCH_SIZE,
-                      feedback_every=int(steps_per_epoch / feedbacks_per_epoch))
-        
-        evals["train_loss"].append(train_loss)
-        evals["train_time"].append(epoch_time)
-        evals["alpha"].append(model.alpha)
 
-        # Evaluate on validation data
-        eval_loss, eval_time = eval_model(model, data_valid, char2id,
-                                          seq_length=SAMPLE_LENGTH,
-                                          batch_size=BATCH_SIZE)
-        evals["valid_loss"].append(eval_loss)
-        evals["valid_time"].append(eval_time)
-        
-        # TODO: Save a sample numerous generated strings to files at each epoch
-        # Print a sample of generated text
-        print_sample_generation(model, char2id, exploration=0.85)
-
-        # Take Snapshots of parameters and evaluation dictionary
-        take_snapshot(model, epoch=i, loss=eval_loss, name=MODEL_NAME, dir=SNAPSHOTS_DIR)
-        obj2pickle(evals, EVALS_FILE)
-                
-        # Printouts
-        epoch_template = "({}) TRAIN_LOSS={: 7.3f} VALID_LOSS={: 7.3f}"
-        print(epoch_template.format(timer.elapsed_string(), train_loss, eval_loss))
-
-except KeyboardInterrupt:
-    print("\n A keyboard interupt wsa deected. ")
-    print("TODO: Save the model")
-
-print("DONE!!!")
 
