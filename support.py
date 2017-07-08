@@ -46,7 +46,19 @@ def maybe_make_pardir(file):
     maybe_mkdir(get_parent_directory(file))
 
 
+# ==============================================================================
+#                                                                     OBJ2PICKLE
+# ==============================================================================
 def obj2pickle(obj, file, protocol=-1):
+    """ Saves an object as a binary pickle file to the desired file path.
+
+    Args:
+        obj:        The python object you want to save.
+        file:       (string)
+                    File path of file you want to save as.  eg /tmp/myFile.pkl
+        protocol:   (int)(default=-1)
+                    Protocol to pass to pickle.dump()
+    """
     s = file if len(file) < 41 else (file[:10] + "..." + file[-28:])
     print("Saving: ", s, end="")
         
