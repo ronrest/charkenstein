@@ -1,3 +1,4 @@
+from __future__ import print_function, division
 import os
 import random
 import string
@@ -5,12 +6,14 @@ import torch
 import torch.nn as nn
 from torch.autograd import Variable
 import time
+import pickle
 
 
 # MAP THE VOCABULARY AND INDICES
 id2char = list(string.printable)
 char2id = {char: id for id, char in enumerate(id2char)}
 n_chars = len(id2char)
+
 
 # ==============================================================================
 #                                                                    MAYBE_MKDIR
@@ -41,6 +44,21 @@ def maybe_make_pardir(file):
         not already exist)
     """
     maybe_mkdir(get_parent_directory(file))
+
+
+def obj2pickle(obj, file, protocol=-1):
+    s = file if len(file) < 41 else (file[:10] + "..." + file[-28:])
+    print("Saving: ", s, end="")
+        
+    # maybe make the parent dir
+    pardir = os.path.dirname(file)
+    if not (pardir == ""):
+        maybe_mkdir(pardir)
+    
+    with open(file, mode="wb") as fileObj:
+        pickle.dump(obj, fileObj, protocol=protocol)
+    
+    print(" -- [DONE]")
 
 
 
