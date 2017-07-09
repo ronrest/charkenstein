@@ -90,7 +90,14 @@ def pickle2obj(file):
     return obj
 
 
+# ==============================================================================
+#                                                                     STRING_IDS
+# ==============================================================================
 def string2ids(s, char2id, size=200):
+    """ Given a string s, and a dictionary that maps from character to
+        an index reprensenting that character, it returns the string
+        represented as a list of character ids.
+    """
     return [char2id[char] for char in s]
 
 
