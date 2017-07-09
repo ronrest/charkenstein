@@ -297,7 +297,16 @@ def str2file(s, file, append=True, sep="\n"):
         textFile.write(s)
 
 
+# ==============================================================================
+#                                                                       DICT2STR
+# ==============================================================================
 def dict2str(d):
+    """ Given a dictionary, it creates a string representation of it. such as:
+
+            '''name: bob
+            age: 30
+            height: 161'''
+    """
     lines = ["{}: {}".format(key, val) for key, val in d.items()]
     return "\n".join(lines)
 
