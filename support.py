@@ -7,6 +7,7 @@ import torch.nn as nn
 from torch.autograd import Variable
 import time
 import pickle
+import glob
 
 
 # MAP THE VOCABULARY AND INDICES
@@ -190,6 +191,15 @@ def take_snapshot(model, file, verbose=True):
 
 
 # ==============================================================================
+def load_latest_snapshot(model, dir):
+    try:
+        params_file = sorted(glob.glob(os.path.join(dir, "*.params")))[-1]
+        model.load_state_dict(torch.load(params_file))
+        print("LOADING PARAMETERS FROM:", params_file)
+    except IndexError:
+        print("USING MODELS INITIAL PARAMETERS")
+
+
 #                                                                 EPOCH_SNAPSHOT
 # ==============================================================================
 def epoch_snapshot(model, epoch, loss, name, dir, verbose=True):
