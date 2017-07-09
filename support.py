@@ -464,3 +464,14 @@ def load_hyper_params(file):
 
     return d
 
+
+def save_hyper_params(d, file):
+    order = ["SAMPLE_LENGTH",
+             "BATCH_SIZE",
+             "N_HIDDEN",
+             "EMBED_SIZE",
+             "N_LAYERS",
+             "DROPOUT",
+             "ALPHA",
+             "LAST_ALPHA"]
+    dict2file(d, file, keys=order)
