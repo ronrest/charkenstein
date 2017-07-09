@@ -39,8 +39,22 @@ hyper = load_hyper_params(HYPERPARAMS_FILE)
 #                                                           SUPPORTING FUNCTIONS
 ################################################################################
 
+# ==============================================================================
+#                                                                      LOAD_DATA
+# ==============================================================================
 def load_data(data_dir, test_ratio=0.3, valid_ratio=0.1):
+    """ Given a directory, it opens the data from all ".txt" files
+        in that directory.
 
+    Args:
+        data_dir:   (str) path to the directory containing txt files.
+        test_ratio: (float)(default=0.3)
+                    Portion of each file to be assigned to the test set.
+        valid_ratio: (float)(default=0.1)
+                    Portion of each file to be assigned to the validation set.
+    Returns: (tuple of 3 strings)
+        data_train, data_test, data_valid
+    """
     print("LOADING DATA FROM TEXT FILES")
     data_files = glob.glob(os.path.join(data_dir, "*.txt"))
     data_train = ""
