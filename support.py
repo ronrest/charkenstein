@@ -382,3 +382,8 @@ def file2str(file):
     return text
 
 
+def file2dict(file):
+    s = file2str(file)
+    return str2dict(s)
+
+
