@@ -55,6 +55,8 @@ def load_data(data_dir, test_ratio=0.3, valid_ratio=0.1):
     Returns: (tuple of 3 strings)
         data_train, data_test, data_valid
     """
+    # TODO: test if appending the string from each file to a list and
+    #       then using "".join(str) is more efficient.
     print("LOADING DATA FROM TEXT FILES")
     data_files = glob.glob(os.path.join(data_dir, "*.txt"))
     data_train = ""
