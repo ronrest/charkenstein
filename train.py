@@ -57,6 +57,12 @@ def load_data(data_dir, test_ratio=0.3, valid_ratio=0.1):
     """
     # TODO: test if appending the string from each file to a list and
     #       then using "".join(str) is more efficient.
+    # TODO: Use a better way of splitting the train, test, valid sets.
+    #       At the moment it creates quite arbitrary cutoff points between
+    #       samples from subsequent texts, which could be mid sentence and
+    #       mid word. This is particularly an issue for validation and test sets
+    #       which are relatively smaller, so will be evaluated on a lot of text
+    #       segments that does not flow properly.
     print("LOADING DATA FROM TEXT FILES")
     data_files = glob.glob(os.path.join(data_dir, "*.txt"))
     data_train = ""
