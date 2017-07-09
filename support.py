@@ -399,7 +399,34 @@ def file2dict(file):
     return str2dict(s)
 
 
+# ==============================================================================
+#                                                              LOAD_HYPER_PARAMS
+# ==============================================================================
 def load_hyper_params(file):
+    """ Given a text file containing the models hyper-parameters, it returns
+        a dictionary. of those items.
+         
+        The text file should be in the following format:
+        
+            SAMPLE_LENGTH: 200
+            BATCH_SIZE: 32
+            N_HIDDEN: 128
+            EMBED_SIZE: 128
+            N_LAYERS: 1
+            DROPOUT: 0.7
+            ALPHA: 0.01
+
+        Any key: value pairs that are not included in the file will be
+        replaced with the default values shown in the above example.
+        
+        An additional optional key value pair may be included.
+
+            LAST_ALPHA: 0.01
+        
+        This represents the last alpha that was used by the model.
+        If this key value pair is not included in the file, then
+        it will be created, using the same value from ALPHA.
+    """
     # Load settings from file
     d = file2dict(file)
     
@@ -426,3 +453,4 @@ def load_hyper_params(file):
     d["LATEST_ALPHA"] = float(d["LATEST_ALPHA"])
 
     return d
+
