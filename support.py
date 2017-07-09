@@ -191,7 +191,14 @@ def take_snapshot(model, file, verbose=True):
 
 
 # ==============================================================================
+#                                                           LOAD_LATEST_SNAPSHOT
+# ==============================================================================
 def load_latest_snapshot(model, dir):
+    """ Given a model, and the path to the dir containing the snapshots,
+        It loads the parameters from the latest saved snapshot.
+        
+        If file, does not exits, then it does nothing.
+    """
     try:
         params_file = sorted(glob.glob(os.path.join(dir, "*.params")))[-1]
         model.load_state_dict(torch.load(params_file))
@@ -200,6 +207,7 @@ def load_latest_snapshot(model, dir):
         print("USING MODELS INITIAL PARAMETERS")
 
 
+# ==============================================================================
 #                                                                 EPOCH_SNAPSHOT
 # ==============================================================================
 def epoch_snapshot(model, epoch, loss, name, dir, verbose=True):
