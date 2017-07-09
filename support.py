@@ -321,3 +321,8 @@ def dict2str(d):
     return "\n".join(lines)
 
 
+def dict2file(d, file):
+    s = dict2str(d)
+    str2file(s, file, append=False, sep="")
+
+
