@@ -399,3 +399,30 @@ def file2dict(file):
     return str2dict(s)
 
 
+def load_hyper_params(file):
+    # Load settings from file
+    d = file2dict(file)
+    
+    # Use defaults for missing items
+    d.setdefault("SAMPLE_LENGTH", 200)
+    d.setdefault("BATCH_SIZE", 32)
+    d.setdefault("N_HIDDEN", 128)
+    d.setdefault("EMBED_SIZE", 64)
+    d.setdefault("N_LAYERS", 1)
+    d.setdefault("DROPOUT", 0.7)
+    d.setdefault("ALPHA", 0.01)
+    
+    # Convert to correct data types
+    d["SAMPLE_LENGTH"] = int(d["SAMPLE_LENGTH"])
+    d["BATCH_SIZE"] = int(d["BATCH_SIZE"])
+    d["N_HIDDEN"] = int(d["N_HIDDEN"])
+    d["EMBED_SIZE"] = int(d["EMBED_SIZE"])
+    d["N_LAYERS"] = int(d["N_LAYERS"])
+    d["DROPOUT"] = float(d["DROPOUT"])
+    d["ALPHA"] = float(d["ALPHA"])
+    
+    # Latest alpha
+    d.setdefault("LATEST_ALPHA", d["ALPHA"])
+    d["LATEST_ALPHA"] = float(d["LATEST_ALPHA"])
+
+    return d
