@@ -372,3 +372,9 @@ def str2dict(s):
     return output
 
 
+def file2str(file):
+    with open(file, "r") as textFile:
+        text = textFile.read()
+    return text
+
+
