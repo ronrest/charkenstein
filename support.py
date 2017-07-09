@@ -332,3 +332,20 @@ def dict2file(d, file):
     str2file(s, file, append=False, sep="")
 
 
+def str2dict(s):
+    output = {}
+    for line in s.splitlines():
+        
+        # Skip blank lines
+        if line.strip() == "":
+            continue
+
+        # Extract content
+        key, val = line.split(":")
+        key = key.strip()
+        val = val.strip()
+        output[key] = val
+    
+    return output
+
+
