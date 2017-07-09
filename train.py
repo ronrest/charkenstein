@@ -36,40 +36,38 @@ hyper = load_hyper_params(HYPERPARAMS_FILE)
 
 
 ################################################################################
-#                                                                           DATA
-################################################################################
-# OPEN DATA - from all ".txt" files in the data directory
-# TODO: test if appending the string from each file and then using "".join(str)
-#       is more efficient.
-print("LOADING DATA FROM TEXT FILES")
-data_files = glob.glob(os.path.join(DATA_DIR, "*.txt"))
-data_train = ""
-data_test = ""
-data_valid = ""
-for data_file in data_files:
-    with open(data_file, mode="r", encoding="utf-8") as fileObj:
-        print(" -", data_file)
-        s = fileObj.read()              # Read text from file
-        s = unidecode.unidecode(s)  # Convert to ASCII
-        
-        # Indices of train valid and test sets
-        file_len = len(s)
-        i_valid = file_len - int(file_len*VALID_RATIO)
-        i_test = i_valid  - int(file_len*TEST_RATIO)
-        
-        # Split the data into train valid and test sets
-        data_train += s[:i_test]
-        data_test += s[i_test:i_valid]
-        data_valid += s[i_valid:]
-
-print("Chars in train data: {:>15d}".format(len(data_train)))
-print("Chars in test data:  {:>15d}".format(len(data_test)))
-print("Chars in valid data: {:>15d}".format(len(data_valid)))
-
-
-################################################################################
 #                                                           SUPPORTING FUNCTIONS
 ################################################################################
+
+def load_data(data_dir, test_ratio=0.3, valid_ratio=0.1):
+
+    print("LOADING DATA FROM TEXT FILES")
+    data_files = glob.glob(os.path.join(data_dir, "*.txt"))
+    data_train = ""
+    data_test = ""
+    data_valid = ""
+    for data_file in data_files:
+        with open(data_file, mode="r", encoding="utf-8") as fileObj:
+            print(" -", data_file)
+            s = fileObj.read()  # Read text from file
+            s = unidecode.unidecode(s)  # Convert to ASCII
+            
+            # Indices of test and valid sets
+            file_len = len(s)
+            i_valid = file_len - int(file_len * valid_ratio)
+            i_test = i_valid - int(file_len * test_ratio)
+            
+            # Split the data into train valid and test sets
+            data_train += s[:i_test]
+            data_test += s[i_test:i_valid]
+            data_valid += s[i_valid:]
+    
+    print("Chars in train data: {:>15d}".format(len(data_train)))
+    print("Chars in test data:  {:>15d}".format(len(data_test)))
+    print("Chars in valid data: {:>15d}".format(len(data_valid)))
+    
+    return data_train, data_test, data_valid
+
 
 # ==============================================================================
 #                                                          RANDOM_TRAINING_BATCH
