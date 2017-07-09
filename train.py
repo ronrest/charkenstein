@@ -31,9 +31,6 @@ HYPERPARAMS_FILE = os.path.join(MODELS_DIR, "hyperparams.txt")
 VALID_RATIO = 0.1
 TEST_RATIO = 0.3
 
-# MODEL HYPER-PARAMETERS
-hyper = load_hyper_params(HYPERPARAMS_FILE)
-
 
 ################################################################################
 #                                                           SUPPORTING FUNCTIONS
@@ -353,8 +350,14 @@ def train_n_epochs(model, hyper, data, data_valid, evals, n_epochs,
 
 
 ################################################################################
-#                                                                          MODEL
+#                                                                TRAIN THE MODEL
 ################################################################################
+# LOAD DATA
+data_train, data_test, data_valid = load_data(DATA_DIR, TEST_RATIO, VALID_RATIO)
+
+# MODEL HYPER-PARAMETERS
+hyper = load_hyper_params(HYPERPARAMS_FILE)
+
 # CREATE THE MODEL
 model = Model(in_size=n_chars,
               embed_size=hyper["EMBED_SIZE"],
@@ -366,10 +369,7 @@ model = Model(in_size=n_chars,
 model.update_learning_rate(hyper["LAST_ALPHA"])
 
 
-
-################################################################################
-#                                                                TRAIN THE MODEL
-################################################################################
+# KEEP TRACK OF EVALS
 # TODO: use the evals object from the multi-digit recognition project.
 evals = {"train_loss": [],
          "valid_loss": [],
@@ -377,6 +377,8 @@ evals = {"train_loss": [],
          "valid_time": [],
          "alpha": [],
          }
+
+train_n_epochs(model, hyper, data_train, data_valid, evals, n_epochs=2)
 
 
 
