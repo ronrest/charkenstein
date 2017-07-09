@@ -310,25 +310,26 @@ def str2file(s, file, append=True, sep="\n"):
 # ==============================================================================
 #                                                                       DICT2STR
 # ==============================================================================
-def dict2str(d):
+def dict2str(d, keys=None):
     """ Given a dictionary, it creates a string representation of it. such as:
 
             '''name: bob
             age: 30
             height: 161'''
     """
-    lines = ["{}: {}".format(key, val) for key, val in d.items()]
+    keys = keys if keys is not None else d.keys()
+    lines = ["{}: {}".format(key, d[key]) for key in keys]
     return "\n".join(lines)
 
 
 # ==============================================================================
 #                                                                      DICT2FILE
 # ==============================================================================
-def dict2file(d, file):
+def dict2file(d, file, keys=None):
     """ Given a dictionary, and a file path, it saves the dictionary as a
         text file.
     """
-    s = dict2str(d)
+    s = dict2str(d, keys)
     str2file(s, file, append=False, sep="")
 
 
