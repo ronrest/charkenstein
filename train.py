@@ -22,8 +22,9 @@ ROOT_DIR = ""
 MODEL_NAME = "modelA"
 
 DATA_DIR = os.path.join(ROOT_DIR, "data")
-SNAPSHOTS_DIR = os.path.join(ROOT_DIR, "snapshots", MODEL_NAME)
-EVALS_FILE = os.path.join(SNAPSHOTS_DIR, MODEL_NAME + "_evals.pickle")
+MODELS_DIR = os.path.join(ROOT_DIR, "models", MODEL_NAME)
+SNAPSHOTS_DIR = os.path.join(MODELS_DIR, "snapshots")
+EVALS_FILE = os.path.join(MODELS_DIR, "evals.pickle")
 
 VALID_RATIO = 0.1
 TEST_RATIO = 0.3
