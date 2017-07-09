@@ -90,6 +90,9 @@ def pickle2obj(file):
     return obj
 
 
+def string2ids(s, char2id, size=200):
+    return [char2id[char] for char in s]
+
 
 # ==============================================================================
 #                                                               RANDOM_SUBSTRING
