@@ -318,7 +318,7 @@ def train_n_epochs(model, hyper, data, data_valid, evals, n_epochs,
         take_snapshot(model, file)
         
         # Save evals as a recovery file
-        file = os.path.join(SNAPSHOTS_DIR, MODEL_NAME + ".recovery_evals")
+        file = os.path.join(MODELS_DIR, MODEL_NAME + ".recovery_evals")
         obj2pickle(evals, file)
 
 
