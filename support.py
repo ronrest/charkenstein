@@ -321,7 +321,13 @@ def dict2str(d):
     return "\n".join(lines)
 
 
+# ==============================================================================
+#                                                                      DICT2FILE
+# ==============================================================================
 def dict2file(d, file):
+    """ Given a dictionary, and a file path, it saves the dictionary as a
+        text file.
+    """
     s = dict2str(d)
     str2file(s, file, append=False, sep="")
 
