@@ -427,8 +427,12 @@ def load_hyper_params(file):
         If this key value pair is not included in the file, then
         it will be created, using the same value from ALPHA.
     """
-    # Load settings from file
-    d = file2dict(file)
+    # If file exists load settings from file.
+    # Otherwise, create default dictionary
+    if os.path.exists(file) and os.path.isfile(file):
+        d = file2dict(file)
+    else:
+        d = {}
     
     # Use defaults for missing items
     d.setdefault("SAMPLE_LENGTH", 200)
