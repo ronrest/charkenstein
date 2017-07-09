@@ -262,7 +262,31 @@ def generate(model, char2id, seed_str='A', length=100, exploration=0.5):
     return generated
 
 
+# ==============================================================================
+#                                                                       STR2FILE
+# ==============================================================================
 def str2file(s, file, append=True, sep="\n"):
+    """ Takes a string object and a path to a file, and saves the contents
+        of the string as text in the file.
+
+        If the file already exists, then you can chose whether you want
+        to append (this is the default behaviour) or overwrite with the
+        new content.
+
+        If you chose to append, you can also chose how the new content gets
+        separated from the existing content. By default, new content appears
+        on a new line.
+
+    Args:
+        s:      (string) The string containing the new content
+        file:   (string) The path to the file
+        append: (bool)(default = True)
+                Should it append new content to existing file?
+                (False will replace the file with new content)
+        sep:    (string)(default = "\n")
+                The string used to separate the existing content
+                with the new content.
+    """
     mode = "a" if append else "w"  # Append or replace mode
     if append and (sep != ""):
         s = sep + s  # Appended text separated by desired string
