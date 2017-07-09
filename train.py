@@ -315,15 +315,21 @@ def train_n_epochs(model, hyper, data, data_valid, evals, n_epochs,
               timer.elapsed_string())
         
         # Save parameters as a recovery file
+        print("Storing Recovery parameters")
         file = os.path.join(SNAPSHOTS_DIR, MODEL_NAME + ".recovery_params")
         take_snapshot(model, file)
         
         # Save evals as a recovery file
+        print("Storing Recovery evals")
         file = os.path.join(MODELS_DIR, MODEL_NAME + ".recovery_evals")
         obj2pickle(evals, file)
+        
         # Save hyper parameters
+        print("Saving Hyper Params")
         hyper["LAST_ALPHA"] = model.alpha
         dict2file(hyper, HYPERPARAMS_FILE)
+        
+        print("OK DONE")
 
 
 ################################################################################
