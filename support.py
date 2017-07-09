@@ -465,7 +465,23 @@ def load_hyper_params(file):
     return d
 
 
+# ==============================================================================
+#                                                              SAVE_HYPER_PARAMS
+# ==============================================================================
 def save_hyper_params(d, file):
+    """ Given dictionary containing the hyperparameter settings,
+        and and file path to save to, it saves the dictionary
+        contents as a text file, in the following format:
+        
+            SAMPLE_LENGTH: 200
+            BATCH_SIZE: 32
+            N_HIDDEN: 128
+            EMBED_SIZE: 128
+            N_LAYERS: 1
+            DROPOUT: 0.7
+            ALPHA: 0.01
+            LAST_ALPHA: 0.01
+    """
     order = ["SAMPLE_LENGTH",
              "BATCH_SIZE",
              "N_HIDDEN",
@@ -475,3 +491,4 @@ def save_hyper_params(d, file):
              "ALPHA",
              "LAST_ALPHA"]
     dict2file(d, file, keys=order)
+
