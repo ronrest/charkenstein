@@ -332,7 +332,30 @@ def dict2file(d, file):
     str2file(s, file, append=False, sep="")
 
 
+# ==============================================================================
+#                                                                       STR2DICT
+# ==============================================================================
 def str2dict(s):
+    """ Given a string, where each line contains a key value pair separated by
+        a colon, such as:
+
+            name: bob
+            age: 30
+            height: 161
+
+        It returns a dictionary such as:
+
+            {"name": "bob",
+             "age": "30",
+             "height": "161"
+            }
+
+    NOTES:
+        - Note that they keys and values will always be returned as strings.
+          You will need to manually update them to the data type you want.
+        - Note that all keys, and values will automatically have whitespaces
+          from either end automatically stripped.
+    """
     output = {}
     for line in s.splitlines():
         
