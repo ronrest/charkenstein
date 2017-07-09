@@ -296,3 +296,9 @@ def str2file(s, file, append=True, sep="\n"):
     with open(file, mode=mode) as textFile:
         textFile.write(s)
 
+
+def dict2str(d):
+    lines = ["{}: {}".format(key, val) for key, val in d.items()]
+    return "\n".join(lines)
+
+
