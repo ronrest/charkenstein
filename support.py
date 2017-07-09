@@ -477,8 +477,8 @@ def load_hyper_params(file):
     d["ALPHA"] = float(d["ALPHA"])
     
     # Latest alpha
-    d.setdefault("LATEST_ALPHA", d["ALPHA"])
-    d["LATEST_ALPHA"] = float(d["LATEST_ALPHA"])
+    d.setdefault("LAST_ALPHA", d["ALPHA"])
+    d["LAST_ALPHA"] = float(d["LAST_ALPHA"])
 
     return d
 
