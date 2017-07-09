@@ -95,6 +95,7 @@ def eval_model(model, data, char2id, seq_length=200, batch_size=32):
     # batch_size = 256
     
     timer = Timer()
+    timer.start()
     total_loss = 0
     
     for step in range(n_steps):
@@ -111,4 +112,5 @@ def eval_model(model, data, char2id, seq_length=200, batch_size=32):
     # Return the average loss, and total time
     avg_loss = total_loss / n_steps
     return avg_loss, timer.elapsed()
+
 
