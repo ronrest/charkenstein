@@ -370,6 +370,7 @@ model.update_learning_rate(hyper["LAST_ALPHA"])
 
 
 # KEEP TRACK OF EVALS
+# TODO: Load evals from file if it already exists
 # TODO: use the evals object from the multi-digit recognition project.
 evals = {"train_loss": [],
          "valid_loss": [],
