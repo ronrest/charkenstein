@@ -10,6 +10,7 @@ import glob
 
 from support import random_substring_ids, str2tensor
 from support import pickle2obj, obj2pickle, take_snapshot, epoch_snapshot
+from support import dict2file, load_hyper_params
 from support import id2char, char2id, n_chars
 from support import Timer, pretty_time
 from support import nn, torch, Variable
@@ -25,18 +26,13 @@ DATA_DIR = os.path.join(ROOT_DIR, "data")
 MODELS_DIR = os.path.join(ROOT_DIR, "models", MODEL_NAME)
 SNAPSHOTS_DIR = os.path.join(MODELS_DIR, "snapshots")
 EVALS_FILE = os.path.join(MODELS_DIR, "evals.pickle")
+HYPERPARAMS_FILE = os.path.join(MODELS_DIR, "hyperparams.txt")
 
 VALID_RATIO = 0.1
 TEST_RATIO = 0.3
 
 # MODEL HYPER-PARAMETERS
-SAMPLE_LENGTH = 200
-BATCH_SIZE = 256
-N_HIDDEN = 100
-N_LAYERS = 1
-EMBED_SIZE = 64
-DROPOUT = 0.7
-ALPHA = 0.01
+hyper = load_hyper_params(HYPERPARAMS_FILE)
 
 
 ################################################################################
@@ -177,7 +173,7 @@ def train(model, X, Y):
 # ==============================================================================
 #                                                                  TRAIN_N_STEPS
 # ==============================================================================
-def train_n_steps(model, train_data, n_steps=1000, batch_size=32, feedback_every=1000):
+def train_n_steps(model, hyper, train_data, n_steps=1000, batch_size=32, feedback_every=1000):
     """ Trains the model for n_steps number of steps.
         Returns a tuple:
             avg_loss, total_train_time
@@ -191,7 +187,7 @@ def train_n_steps(model, train_data, n_steps=1000, batch_size=32, feedback_every
     feedback_loss = 0
     for step in range(1, n_steps + 1):
         # Perform a training step
-        X, Y = random_training_batch(train_data,char2id,SAMPLE_LENGTH,batch_size)
+        X, Y = random_training_batch(train_data,char2id,hyper["SAMPLE_LENGTH"],batch_size)
         loss = train(model, X, Y)
         
         # Increment losses
@@ -231,7 +227,7 @@ def print_sample_generation(model, char2id, seed_str="A", length=100, exploratio
 # ==============================================================================
 #                                                                 TRAIN_N_EPOCHS
 # ==============================================================================
-def train_n_epochs(model, data, data_valid, evals, n_epochs,
+def train_n_epochs(model, hyper, data, data_valid, evals, n_epochs,
                    feedbacks_per_epoch=10, alpha_decay=1.0):
     """ Train the model for a desired amount of epochs.
         Automatically takes snapshots of the parameters after each epoch, and
@@ -240,6 +236,7 @@ def train_n_epochs(model, data, data_valid, evals, n_epochs,
     Args:
         model:
         data:       (str) Training data
+        hyper:      (dict) hyperparameters dictionary
         data_valid: (str) Validation data
         evals:      (dict of lists)
                     The dict that stores the losses and times for each epoch
@@ -260,8 +257,8 @@ def train_n_epochs(model, data, data_valid, evals, n_epochs,
     # even number of chunks.
     # But it is still a useful approximation, that allows us to have more variation
     # in the training data.
-    samples_per_epoch = int(len(data_train) // SAMPLE_LENGTH)
-    steps_per_epoch = int(samples_per_epoch / BATCH_SIZE)
+    samples_per_epoch = int(len(data_train) // hyper["SAMPLE_LENGTH"])
+    steps_per_epoch = int(samples_per_epoch / hyper["BATCH_SIZE"])
     feedback_every = int(steps_per_epoch / feedbacks_per_epoch)
     
     try:
@@ -274,9 +271,10 @@ def train_n_epochs(model, data, data_valid, evals, n_epochs,
             
             # TRAIN OVER A SINGLE EPOCH
             train_loss, epoch_time = train_n_steps(model,
+                                                   hyper,
                                                    data_train,
                                                    n_steps=steps_per_epoch,
-                                                   batch_size=BATCH_SIZE,
+                                                   batch_size=hyper["BATCH_SIZE"],
                                                    feedback_every=feedback_every)
             
             evals["train_loss"].append(train_loss)
@@ -285,8 +283,8 @@ def train_n_epochs(model, data, data_valid, evals, n_epochs,
             
             # EVALUATE ON VALIDATION DATA
             eval_loss, eval_time = eval_model(model, data_valid, char2id,
-                                              seq_length=SAMPLE_LENGTH,
-                                              batch_size=BATCH_SIZE)
+                                              seq_length=hyper["SAMPLE_LENGTH"],
+                                              batch_size=hyper["BATCH_SIZE"])
             evals["valid_loss"].append(eval_loss)
             evals["valid_time"].append(eval_time)
             
@@ -305,6 +303,7 @@ def train_n_epochs(model, data, data_valid, evals, n_epochs,
             
             # PREPARE MODEL FOR NEXT EPOCH
             model.update_learning_rate(model.alpha * alpha_decay)
+            hyper["LAST_ALPHA"] = model.alpha
         
         print("- DONE")
         return evals
@@ -328,13 +327,13 @@ def train_n_epochs(model, data, data_valid, evals, n_epochs,
 ################################################################################
 # CREATE THE MODEL
 model = Model(in_size=n_chars,
-              embed_size=EMBED_SIZE,
-              h_size=N_HIDDEN,
+              embed_size=hyper["EMBED_SIZE"],
+              h_size=hyper["N_HIDDEN"],
               out_size=n_chars,
-              n_layers=N_LAYERS,
-              dropout=DROPOUT)
+              n_layers=hyper["N_LAYERS"],
+              dropout=hyper["DROPOUT"])
 
-model.update_learning_rate(ALPHA)
+model.update_learning_rate(hyper["LAST_ALPHA"])
 
 
 
