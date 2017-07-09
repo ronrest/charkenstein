@@ -9,8 +9,8 @@ import unidecode
 import glob
 
 from support import random_substring_ids, str2tensor
-from support import pickle2obj, obj2pickle, take_snapshot, epoch_snapshot
-from support import dict2file, load_hyper_params
+from support import pickle2obj, obj2pickle, dict2file, load_hyper_params
+from support import take_snapshot, epoch_snapshot, load_latest_snapshot
 from support import id2char, char2id, n_chars
 from support import Timer, pretty_time
 from support import nn, torch, Variable
@@ -368,6 +368,8 @@ model = Model(in_size=n_chars,
 
 model.update_learning_rate(hyper["LAST_ALPHA"])
 
+# LOAD PREVIOUSLY SAVED MODEL PARAMETERS - if they exist
+load_latest_snapshot(model, SNAPSHOTS_DIR)
 
 # KEEP TRACK OF EVALS
 # TODO: Load evals from file if it already exists
