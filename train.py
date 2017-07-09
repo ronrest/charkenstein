@@ -292,6 +292,7 @@ def train_n_epochs(model, hyper, data, data_valid, evals, n_epochs,
             epoch_snapshot(model, epoch=i, loss=eval_loss, name=MODEL_NAME,
                            dir=SNAPSHOTS_DIR)
             obj2pickle(evals, EVALS_FILE)
+            dict2file(hyper, HYPERPARAMS_FILE)
             
             # FEEDBACK PRINTOUTS
             # TODO: Save a sample numerous generated strings to files at each epoch
@@ -320,6 +321,9 @@ def train_n_epochs(model, hyper, data, data_valid, evals, n_epochs,
         # Save evals as a recovery file
         file = os.path.join(MODELS_DIR, MODEL_NAME + ".recovery_evals")
         obj2pickle(evals, file)
+        # Save hyper parameters
+        hyper["LAST_ALPHA"] = model.alpha
+        dict2file(hyper, HYPERPARAMS_FILE)
 
 
 ################################################################################
