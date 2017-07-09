@@ -382,7 +382,19 @@ def file2str(file):
     return text
 
 
+# ==============================================================================
+#                                                                      FILE2DICT
+# ==============================================================================
 def file2dict(file):
+    """ Takes a file path to a text file, where each line contains a
+        key, value pair separated by a colon, such as:
+    
+            name: bob
+            age: 30
+            height: 161
+        
+        And returns the contents of that file as a dictionary.
+    """
     s = file2str(file)
     return str2dict(s)
 
