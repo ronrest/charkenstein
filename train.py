@@ -372,15 +372,16 @@ model.update_learning_rate(hyper["LAST_ALPHA"])
 # LOAD PREVIOUSLY SAVED MODEL PARAMETERS - if they exist
 load_latest_snapshot(model, SNAPSHOTS_DIR)
 
-# KEEP TRACK OF EVALS
-# TODO: Load evals from file if it already exists
-# TODO: use the evals object from the multi-digit recognition project.
-evals = {"train_loss": [],
-         "valid_loss": [],
-         "train_time": [],
-         "valid_time": [],
-         "alpha": [],
-         }
+# KEEP TRACK OF EVALS - loading from file if they already exist
+if os.path.exists(EVALS_FILE):
+    evals = pickle2obj(EVALS_FILE)
+else:
+    evals = {"train_loss": [],
+             "valid_loss": [],
+             "train_time": [],
+             "valid_time": [],
+             "alpha": [],
+             }
 
 train_n_epochs(model, hyper, data_train, data_valid, evals, n_epochs=2)
 
