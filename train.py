@@ -9,7 +9,8 @@ import unidecode
 import glob
 
 from support import random_substring_ids, str2tensor
-from support import pickle2obj, obj2pickle, dict2file, load_hyper_params
+from support import pickle2obj, obj2pickle, dict2file
+from support import save_hyper_params, load_hyper_params
 from support import take_snapshot, epoch_snapshot, load_latest_snapshot
 from support import id2char, char2id, n_chars
 from support import Timer, pretty_time
@@ -309,7 +310,7 @@ def train_n_epochs(model, hyper, data, data_valid, evals, n_epochs,
             epoch_snapshot(model, epoch=i, loss=eval_loss, name=MODEL_NAME,
                            dir=SNAPSHOTS_DIR)
             obj2pickle(evals, EVALS_FILE)
-            dict2file(hyper, HYPERPARAMS_FILE)
+            save_hyper_params(hyper, HYPERPARAMS_FILE)
             
             # FEEDBACK PRINTOUTS
             # TODO: Save a sample numerous generated strings to files at each epoch
@@ -344,7 +345,7 @@ def train_n_epochs(model, hyper, data, data_valid, evals, n_epochs,
         # Save hyper parameters
         print("Saving Hyper Params")
         hyper["LAST_ALPHA"] = model.alpha
-        dict2file(hyper, HYPERPARAMS_FILE)
+        save_hyper_params(hyper, HYPERPARAMS_FILE)
         
         print("OK DONE")
 
