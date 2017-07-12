@@ -1,4 +1,4 @@
-from __future__ import print_function, division
+from __future__ import print_function, division, unicode_literals
 import os
 import random
 import string
@@ -322,7 +322,7 @@ def str2file(s, file, append=True, sep="\n"):
     # SAVE- Ensuring parent directory structure exists
     maybe_make_pardir(file)
     with open(file, mode=mode) as textFile:
-        textFile.write(s)
+        textFile.write(unicode(s))
 
 
 # ==============================================================================
