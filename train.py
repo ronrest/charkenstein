@@ -6,6 +6,8 @@ from io import open  # supports unicode encoding argument for python 2.7
 import os
 import unidecode
 
+import matplotlib.pyplot as plt
+import numpy as np
 import glob
 
 from support import random_substring_ids, str2tensor
@@ -90,6 +92,37 @@ def load_data(data_dir, test_ratio=0.3, valid_ratio=0.1):
 
 
 # ==============================================================================
+def plot_learning_curves(evals, file, model_name=""):
+    green = "#73AD21"
+    blue = "#307EC7"
+    orange = "#E65C00"
+    
+    fig, [ax1, ax2] = plt.subplots(1, 2, figsize=(11, 6))
+    fig.suptitle('Learning curves ' + model_name, y=1.000, fontsize=15)
+    x_labels = map(pretty_time, np.cumsum(evals["train_time"]))
+    
+    ax1.set_title("Loss")
+    ax1.plot(evals["train_loss"], color=orange, label="train")
+    ax1.plot(evals["valid_loss"], color=blue, label="valid")
+    ax1.legend(loc="upper right", frameon=False)
+    ax1.set_xticklabels(x_labels,
+                        rotation=-45,  # Rotation
+                        ha="left",  # Text alignment
+                        fontsize=10
+                        )
+    
+    ax2.set_title("Alpha")
+    ax2.plot(evals["alpha"], color=green)
+    ax2.set_yscale('log')
+    ax2.set_xticklabels(x_labels,
+                        rotation=-45,  # Rotation
+                        ha="left",  # Text alignment
+                        fontsize=10
+                        )
+    
+    fig.savefig(file)
+
+
 #                                                          RANDOM_TRAINING_BATCH
 # ==============================================================================
 def random_training_batch(data, char2id, length=200, batch_size=1):
