@@ -347,6 +347,10 @@ def train_n_epochs(model, hyper, data, data_valid, evals, n_epochs,
             evals["valid_loss"].append(eval_loss)
             evals["valid_time"].append(eval_time)
             
+            # PREPARE MODEL FOR NEXT EPOCH
+            model.update_learning_rate(model.alpha * alpha_decay)
+            hyper["LAST_ALPHA"] = model.alpha
+
             # TAKE SNAPSHOTS - of parameters and evaluation dictionary
             global_epoch = len(evals["train_loss"])
             epoch_snapshot(model, epoch=global_epoch, loss=eval_loss, name=MODEL_NAME,
@@ -366,10 +370,7 @@ def train_n_epochs(model, hyper, data, data_valid, evals, n_epochs,
             plot_learning_curves(evals, file=LEARNING_CURVES_FILE,
                                  model_name=MODEL_NAME)
 
-            # PREPARE MODEL FOR NEXT EPOCH
-            model.update_learning_rate(model.alpha * alpha_decay)
-            hyper["LAST_ALPHA"] = model.alpha
-        
+
         print("- DONE")
         return evals
     
