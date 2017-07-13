@@ -347,7 +347,8 @@ def train_n_epochs(model, hyper, data, data_valid, evals, n_epochs,
             evals["valid_time"].append(eval_time)
             
             # TAKE SNAPSHOTS - of parameters and evaluation dictionary
-            epoch_snapshot(model, epoch=i, loss=eval_loss, name=MODEL_NAME,
+            global_epoch = len(evals["train_loss"])
+            epoch_snapshot(model, epoch=global_epoch, loss=eval_loss, name=MODEL_NAME,
                            dir=SNAPSHOTS_DIR)
             obj2pickle(evals, EVALS_FILE)
             save_hyper_params(hyper, HYPERPARAMS_FILE)
