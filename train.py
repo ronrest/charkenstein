@@ -323,8 +323,9 @@ def train_n_epochs(model, hyper, data, data_valid, evals, n_epochs,
         for i in range(n_epochs):
             print()
             print("=" * 60)
-            print("EPOCH {}/{} ({:0.2f}%)".format(i+1, n_epochs,
-                                                  100 * (i / n_epochs)))
+            print("EPOCH {}/{} ({:0.2f}%) alpha={}".format(i+1, n_epochs,
+                                                100 * (i / n_epochs),
+                                                model.alpha))
             print("=" * 60)
             
             # TRAIN OVER A SINGLE EPOCH
