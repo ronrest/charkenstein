@@ -432,9 +432,10 @@ else:
              "alpha": [],
              }
 
-evals = train_n_epochs(model, hyper, data_train, data_valid, evals, n_epochs=4, alpha_decay=0.85)
-
-
+print("#"*60)
+print("Training {}".format(MODEL_NAME))
+print("#"*60)
+evals = train_n_epochs(model, hyper, data_train, data_valid, evals, n_epochs=4, alpha_decay=0.90)
 
 
 
