@@ -428,7 +428,7 @@ else:
              "alpha": [],
              }
 
-train_n_epochs(model, hyper, data_train, data_valid, evals, n_epochs=2)
+evals = train_n_epochs(model, hyper, data_train, data_valid, evals, n_epochs=4, alpha_decay=0.85)
 
 
 
