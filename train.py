@@ -419,8 +419,10 @@ load_latest_snapshot(model, SNAPSHOTS_DIR)
 
 # KEEP TRACK OF EVALS - loading from file if they already exist
 if os.path.exists(EVALS_FILE):
+    print("LOADING EXISTING EVALS")
     evals = pickle2obj(EVALS_FILE)
 else:
+    print("INITIALIZING NEW EVALS")
     evals = {"train_loss": [],
              "valid_loss": [],
              "train_time": [],
