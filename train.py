@@ -30,6 +30,7 @@ MODELS_DIR = os.path.join(ROOT_DIR, "models", MODEL_NAME)
 SNAPSHOTS_DIR = os.path.join(MODELS_DIR, "snapshots")
 EVALS_FILE = os.path.join(MODELS_DIR, "evals.pickle")
 HYPERPARAMS_FILE = os.path.join(MODELS_DIR, "hyperparams.txt")
+LEARNING_CURVES_FILE = os.path.join(MODELS_DIR, "learning_curves.png")
 
 VALID_RATIO = 0.1
 TEST_RATIO = 0.3
@@ -359,6 +360,10 @@ def train_n_epochs(model, hyper, data, data_valid, evals, n_epochs,
             print(epoch_template.format(timer.elapsed_string(), train_loss,
                                         eval_loss))
             
+            # UPDATE LEARNING CURVE PLOT
+            plot_learning_curves(evals, file=LEARNING_CURVES_FILE,
+                                 model_name=MODEL_NAME)
+
             # PREPARE MODEL FOR NEXT EPOCH
             model.update_learning_rate(model.alpha * alpha_decay)
             hyper["LAST_ALPHA"] = model.alpha
