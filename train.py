@@ -437,5 +437,7 @@ print("Training {}".format(MODEL_NAME))
 print("#"*60)
 evals = train_n_epochs(model, hyper, data_train, data_valid, evals, n_epochs=4, alpha_decay=0.90)
 
+print("total train time for {} epochs: {}".format(len(evals["train_time"]), pretty_time(sum(evals["train_time"]))))
+print("Latest losses T: {} V: {}".format(evals["train_loss"][-1], evals["valid_loss"][-1]))
 
 
