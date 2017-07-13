@@ -92,7 +92,12 @@ def load_data(data_dir, test_ratio=0.3, valid_ratio=0.1):
 
 
 # ==============================================================================
+#                                                           PLOT_LEARNING_CURVES
+# ==============================================================================
 def plot_learning_curves(evals, file, model_name=""):
+    """ Given an evals dictionary it plots the training curves and saves them
+        to the ddesired file.
+    """
     green = "#73AD21"
     blue = "#307EC7"
     orange = "#E65C00"
@@ -123,6 +128,7 @@ def plot_learning_curves(evals, file, model_name=""):
     fig.savefig(file)
 
 
+# ==============================================================================
 #                                                          RANDOM_TRAINING_BATCH
 # ==============================================================================
 def random_training_batch(data, char2id, length=200, batch_size=1):
