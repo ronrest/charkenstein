@@ -525,7 +525,13 @@ def save_hyper_params(d, file):
     dict2file(d, file, keys=order)
 
 
+# ==============================================================================
+#                                                STRING_OF_RANDOM_SELECTED_WORDS
+# ==============================================================================
 def string_of_random_selected_words(data, n):
+    """ Given a long string 'data' of many words, it randomly samples `n` words
+        from it, and returns them as a string
+    """
     output = []
     
     for i in range(n):
