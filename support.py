@@ -2,6 +2,7 @@ from __future__ import print_function, division, unicode_literals
 import os
 import random
 import string
+import numpy as np
 import torch
 import torch.nn as nn
 from torch.autograd import Variable
@@ -541,3 +542,4 @@ def string_of_random_selected_words(data, n):
         output.append(word)
     output = " ".join(output)
     return output
+
