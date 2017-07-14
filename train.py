@@ -102,6 +102,7 @@ def plot_learning_curves(evals, file, model_name=""):
     green = "#73AD21"
     blue = "#307EC7"
     orange = "#E65C00"
+    n = len(evals["train_time"])
     
     fig, [ax1, ax2] = plt.subplots(1, 2, figsize=(11, 6))
     fig.suptitle('Learning curves ' + model_name, y=1.000, fontsize=15)
@@ -111,21 +112,25 @@ def plot_learning_curves(evals, file, model_name=""):
     ax1.plot(evals["train_loss"], color=orange, label="train")
     ax1.plot(evals["valid_loss"], color=blue, label="valid")
     ax1.legend(loc="upper right", frameon=False)
+    ax1.set_xticks(range(n))
     ax1.set_xticklabels(x_labels,
                         rotation=-45,  # Rotation
                         ha="left",  # Text alignment
                         fontsize=10
                         )
-    
+    ax1.set_xlabel("Train Time")
+
     ax2.set_title("Alpha")
     ax2.plot(evals["alpha"], color=green)
     ax2.set_yscale('log')
+    ax2.set_xlabel("Train Time")
+    ax2.set_xticks(range(n))
     ax2.set_xticklabels(x_labels,
                         rotation=-45,  # Rotation
-                        ha="left",  # Text alignment
+                        ha="left",     # Text alignment
                         fontsize=10
                         )
-    
+    fig.tight_layout()
     fig.savefig(file)
 
 
