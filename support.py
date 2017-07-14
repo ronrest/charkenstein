@@ -206,6 +206,9 @@ def load_latest_snapshot(model, dir):
     except IndexError:
         print("USING MODELS INITIAL PARAMETERS")
 
+def load_snapshot(model, file):
+    model.load_state_dict(torch.load(file))
+
 
 # ==============================================================================
 #                                                                 EPOCH_SNAPSHOT
