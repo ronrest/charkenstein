@@ -237,11 +237,10 @@ def epoch_snapshot(model, epoch, loss, name, dir, verbose=True):
     take_snapshot(model, filepath, verbose=verbose)
 
 
-
 # ==============================================================================
 #                                                                       GENERATE
 # ==============================================================================
-def generate(model, char2id, seed_str='A', length=100, exploration=0.5):
+def generate(model, char2id, seed_str='', length=100, exploration=0.5):
     """ Generates a new string one character at a time of specified length
         based on the models currently trained weights.
 
@@ -251,6 +250,8 @@ def generate(model, char2id, seed_str='A', length=100, exploration=0.5):
         seed_str:    (str)
                      The generated text will start with this text, and
                      continue generating new characters from there onwards.
+                     If left blank, then it randomly selects a capital letter
+                     to use as the seed.
         length:      (int) Length of sequence you want to generate
         exploration: (float between (0,1] )
                      The closer the value is to 0, the more likely it is
@@ -265,6 +266,10 @@ def generate(model, char2id, seed_str='A', length=100, exploration=0.5):
     # Store the original training mode, and turn training mode Off
     train_mode = model.training
     model.train(False)
+
+    # If no seed string was provided, then randomly select an upper case letter
+    if not seed_str:
+        seed_str = np.random.choice(list(string.ascii_uppercase))
 
     # Initializations
     hidden = model.init_hidden(batch_size=1)
