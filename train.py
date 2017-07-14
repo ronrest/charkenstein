@@ -400,6 +400,7 @@ def train_n_epochs(model, hyper, data, data_valid, evals, n_epochs,
         save_hyper_params(hyper, HYPERPARAMS_FILE)
         
         print("OK DONE")
+        return evals
 
 
 ################################################################################
