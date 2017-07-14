@@ -524,3 +524,14 @@ def save_hyper_params(d, file):
              "LAST_ALPHA"]
     dict2file(d, file, keys=order)
 
+
+def string_of_random_selected_words(data, n):
+    output = []
+    
+    for i in range(n):
+        chunk_start = np.random.randint(0, len(data) - 100)
+        chunk = data[chunk_start: chunk_start + 100]
+        word = np.random.choice(chunk.split())
+        output.append(word)
+    output = " ".join(output)
+    return output
